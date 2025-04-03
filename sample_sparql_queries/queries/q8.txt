@@ -1,0 +1,6 @@
+PREFIX ex: <http://example.org/ontology#>
+
+SELECT ?evalProcedure
+WHERE {
+  ex:TrainedMLModel_Entity ex:evaluationProcedure ?evalProcedure .
+}

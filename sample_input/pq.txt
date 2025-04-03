@@ -1,0 +1,10 @@
+Who pre-processed the data in the dataset?
+Who produced deployment guidelines?
+Where is the source code stored? 
+When was the used dataset published?
+How often does the system make errors?
+Why is this instance given this prediction?
+Which data and data sources does the algorithm use?
+What was the evaluation procedure?
+What is the intended use of the AI system? 
+What is the license of the associated data?

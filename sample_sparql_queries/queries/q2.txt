@@ -1,0 +1,7 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ex:   <http://example.org/ontology#>
+
+SELECT ?producer
+WHERE {
+  ex:DeploymentGuidelines_Entity prov:wasAttributedTo ?producer .
+}

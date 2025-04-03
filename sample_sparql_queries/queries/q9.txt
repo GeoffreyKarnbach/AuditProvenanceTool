@@ -1,0 +1,6 @@
+PREFIX ex: <http://example.org/ontology#>
+
+SELECT ?intendedUse
+WHERE {
+  ex:TrainedMLModel_Entity ex:intendedUse ?intendedUse .
+}

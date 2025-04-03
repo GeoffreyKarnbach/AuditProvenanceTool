@@ -1,0 +1,59 @@
+<div style="display: flex; align-items: center; margin-bottom: 1em">
+  <h4>{{ getMonthName() }} {{ currentYear }}</h4>
+  <div style="margin-left: auto">
+    <button
+      type="button"
+      class="btn btn-primary"
+      style="margin-right: 0.75em"
+      (click)="currentMonthAndYear()"
+    >
+      Today
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      style="margin-right: 0.25em"
+      (click)="previousMonth()"
+    >
+      <i class="bi-chevron-left"></i>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="nextMonth()">
+      <i class="bi-chevron-right"></i>
+    </button>
+  </div>
+</div>
+<table>
+  <tr>
+    <th style="width: 14.28%">Monday</th>
+    <th style="width: 14.28%">Tuesday</th>
+    <th style="width: 14.28%">Wednesday</th>
+    <th style="width: 14.28%">Thursday</th>
+    <th style="width: 14.28%">Friday</th>
+    <th style="width: 14.28%">Saturday</th>
+    <th style="width: 14.28%">Sunday</th>
+  </tr>
+  <tr *ngFor="let i of getWeeksForDisplayInMonth()">
+    <td
+      *ngFor="let j of [0, 1, 2, 3, 4, 5, 6]"
+      style="position: relative; height: 10em"
+      [ngClass]="{ 'today-field': getTodayIndicator(i, j) }"
+    >
+      <div class="left-recipe-buy-column">
+        <div
+          *ngFor="let recipe of getItemsForDay(i, j)"
+          class="recipe-entry"
+          (click)="(null)"
+        >
+          <span style="margin-left: 0.25em; font-size: 0.7em">{{
+            recipe.recipeName.slice(0, 24)
+          }}</span>
+        </div>
+      </div>
+      <div class="right-date-column">
+        <p style="position: absolute; top: 0.5em; right: 0.5em">
+          {{ getDayNumberForPosition(i, j) }}
+        </p>
+      </div>
+    </td>
+  </tr>
+</table>

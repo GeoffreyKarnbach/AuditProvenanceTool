@@ -1,0 +1,8 @@
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX ex:  <http://example.org/ontology#>
+
+SELECT ?activity ?repo
+WHERE {
+  ?activity dct:source ?repo .
+}
+ORDER BY ?activity

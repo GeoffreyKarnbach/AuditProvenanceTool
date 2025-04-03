@@ -1,0 +1,10 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX p-plan: <http://purl.org/net/p-plan#>
+PREFIX ex:   <http://example.org/ontology#>
+
+SELECT ?runActivity ?dataUsed
+WHERE {
+  ?runActivity p-plan:correspondsToStep ex:RunAIModel_Step ;
+               prov:used ?dataUsed .
+}
+ORDER BY ?runActivity ?dataUsed

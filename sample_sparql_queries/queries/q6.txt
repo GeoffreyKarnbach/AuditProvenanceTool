@@ -1,0 +1,11 @@
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX ex:  <http://example.org/ontology#>
+
+SELECT ?prediction ?explanation ?feature ?weight
+WHERE {
+  ?prediction dct:description ?explanation ;
+              ex:hasFeatureWeight ?fwNode .
+  ?fwNode ex:forFeature ?feature ;
+          ex:weight ?weight .
+}
+ORDER BY ?prediction DESC(?weight)

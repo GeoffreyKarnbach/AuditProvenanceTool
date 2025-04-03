@@ -1,0 +1,6 @@
+PREFIX ex: <http://example.org/ontology#>
+
+SELECT ?errorRate
+WHERE {
+  ex:TrainedMLModel_Entity ex:errorRate ?errorRate .
+}
