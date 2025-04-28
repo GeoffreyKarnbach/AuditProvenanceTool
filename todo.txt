@@ -1,3 +1,0 @@
-Formalize the workflow as a text
-Internal model (FE + BE)
-Potentially AI?
