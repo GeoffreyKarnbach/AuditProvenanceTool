@@ -1,0 +1,596 @@
+@prefix : <https://w3id.org/audit/ns/service##> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix audit: <https://w3id.org/audit/ns/service#> .
+@prefix p-plan: <http://purl.org/net/p-plan#> .
+@base <https://w3id.org/audit/ns/service#> .
+
+<https://w3id.org/audit/ns/service#> rdf:type owl:Ontology ;
+                                      rdfs:comment "P-PLAN-based definition of an AI workflow, with domain, task, features, etc." ;
+                                      rdfs:label "AI Workflow Ontology" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/net/p-plan#hasInputVar
+p-plan:hasInputVar rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/net/p-plan#hasOutputVar
+p-plan:hasOutputVar rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/net/p-plan#hasStep
+p-plan:hasStep rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/net/p-plan#isStepOfPlan
+p-plan:isStepOfPlan rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/net/p-plan#wasPrecededBy
+p-plan:wasPrecededBy rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#addressesTask
+audit:addressesTask rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#belongsToDomain
+audit:belongsToDomain rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasMappingType
+audit:hasMappingType rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasParameterName
+audit:hasParameterName rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasParameterType
+audit:hasParameterType rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasPlan
+audit:hasPlan rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasSourceType
+audit:hasSourceType rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasValidationFunction
+audit:hasValidationFunction rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://w3id.org/audit/ns/service#hasParameter
+audit:hasParameter rdf:type owl:ObjectProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasService
+audit:hasService rdf:type owl:ObjectProperty ;
+                 rdfs:comment "hasService" .
+
+
+###  https://w3id.org/audit/ns/service#hasTransformationFunction
+audit:hasTransformationFunction rdf:type owl:ObjectProperty ;
+                                rdfs:label "has transformation function" .
+
+
+###  https://w3id.org/audit/ns/service#includesFeature
+audit:includesFeature rdf:type owl:ObjectProperty ;
+                      rdfs:domain p-plan:Variable ;
+                      rdfs:range audit:Feature .
+
+
+###  https://w3id.org/audit/ns/service#isBasedOnStep
+audit:isBasedOnStep rdf:type owl:ObjectProperty ;
+                    rdfs:label "is based on step" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://w3id.org/audit/ns/service#hasJsonSchemaLocalPath
+audit:hasJsonSchemaLocalPath rdf:type owl:DatatypeProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasMappingLocalPath
+audit:hasMappingLocalPath rdf:type owl:DatatypeProperty .
+
+
+###  https://w3id.org/audit/ns/service#hasURI
+audit:hasURI rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/net/p-plan#Plan
+p-plan:Plan rdf:type owl:Class .
+
+
+###  http://purl.org/net/p-plan#Step
+p-plan:Step rdf:type owl:Class .
+
+
+###  http://purl.org/net/p-plan#Variable
+p-plan:Variable rdf:type owl:Class .
+
+
+###  http://www.w3.org/2000/01/rdf-schema#Property
+rdfs:Property rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Bundle
+<http://www.w3.org/ns/prov#Bundle> rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#AISystem
+audit:AISystem rdf:type owl:Class ;
+               rdfs:label "AI System" .
+
+
+###  https://w3id.org/audit/ns/service#Acquire
+audit:Acquire rdf:type owl:Class ;
+              rdfs:subClassOf audit:AuditBoxService .
+
+
+###  https://w3id.org/audit/ns/service#AuditBoxService
+audit:AuditBoxService rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#AuditProcedure
+audit:AuditProcedure rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#Domain
+audit:Domain rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#Feature
+audit:Feature rdf:type owl:Class ;
+              rdfs:comment "Represents a data feature or parameter in the dataset." ;
+              rdfs:label "Feature" .
+
+
+###  https://w3id.org/audit/ns/service#Fetch
+audit:Fetch rdf:type owl:Class ;
+            rdfs:subClassOf audit:Acquire .
+
+
+###  https://w3id.org/audit/ns/service#Parameter
+audit:Parameter rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#ParameterizedQuery
+audit:ParameterizedQuery rdf:type owl:Class ;
+                         rdfs:subClassOf audit:Query .
+
+
+###  https://w3id.org/audit/ns/service#Query
+audit:Query rdf:type owl:Class ;
+            rdfs:subClassOf audit:AuditBoxService .
+
+
+###  https://w3id.org/audit/ns/service#Receive
+audit:Receive rdf:type owl:Class ;
+              rdfs:subClassOf audit:Acquire ;
+              rdfs:label "Receive" .
+
+
+###  https://w3id.org/audit/ns/service#ServiceFunction
+audit:ServiceFunction rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#System
+audit:System rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#Task
+audit:Task rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns/service#TimerFetch
+audit:TimerFetch rdf:type owl:Class ;
+                 rdfs:subClassOf audit:Fetch .
+
+
+###  https://w3id.org/audit/ns/service#Transformation
+audit:Transformation rdf:type owl:Class ;
+                     rdfs:subClassOf audit:ServiceFunction ;
+                     rdfs:label "Transformation" .
+
+
+###  https://w3id.org/audit/ns/service#Validation
+audit:Validation rdf:type owl:Class ;
+                 rdfs:subClassOf audit:ServiceFunction ;
+                 rdfs:label "Validation" .
+
+
+###  https://w3id.org/ep-plan#ExecutionTraceBundle
+<https://w3id.org/ep-plan#ExecutionTraceBundle> rdf:type owl:Class ;
+                                                rdfs:subClassOf <http://www.w3.org/ns/prov#Bundle> .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://w3id.org/audit/ns/service#AIWorkflow
+audit:AIWorkflow rdf:type owl:NamedIndividual ,
+                          p-plan:Plan ;
+                 p-plan:hasStep audit:CollectPatientDataStep ,
+                                audit:CollectTrainingDataStep ,
+                                audit:PreProcessPatientDataStep ,
+                                audit:PreProcessTrainingDataStep ,
+                                audit:RunAIModelStep ,
+                                audit:TrainMLModelStep ;
+                 rdfs:comment "Plan for training a model and running inference on patient data." ;
+                 rdfs:label "AI Workflow Plan" ;
+                 audit:addressesTask audit:PredictAdverseEffects ;
+                 audit:belongsToDomain audit:Medical .
+
+
+###  https://w3id.org/audit/ns/service#Age
+audit:Age rdf:type owl:NamedIndividual ,
+                   audit:Feature ;
+          rdfs:comment "Age in years or date of birth reference." ;
+          rdfs:label "Age" .
+
+
+###  https://w3id.org/audit/ns/service#BloodPressure
+audit:BloodPressure rdf:type owl:NamedIndividual ,
+                             audit:Feature ;
+                    rdfs:comment "Systolic and diastolic measurements." ;
+                    rdfs:label "Blood Pressure" .
+
+
+###  https://w3id.org/audit/ns/service#CleanedTrainingData_Var
+audit:CleanedTrainingData_Var rdf:type owl:NamedIndividual ,
+                                       p-plan:Variable ;
+                              rdfs:label "Cleaned Training Data Variable" .
+
+
+###  https://w3id.org/audit/ns/service#CollectPatientDataStep
+audit:CollectPatientDataStep rdf:type owl:NamedIndividual ,
+                                      p-plan:Step ,
+                                      audit:Receive ;
+                             audit:hasTransformationFunction audit:CollectPatientDataStepTransformation ;
+                             audit:isBasedOnStep audit:CollectPatientDataStepStep ;
+                             p-plan:hasInputVar audit:MedicalData_Var ;
+                             p-plan:hasOutputVar audit:RawPatientData_Var ;
+                             p-plan:isStepOfPlan audit:AIWorkflow ;
+                             rdfs:label "Collect Patient Data Step" ,
+                                        "CollectPatientDataStep" ;
+                             audit:hasSourceType "JSON" ;
+                             audit:hasValidationFunction audit:CollectPatientDataStepValidation .
+
+
+###  https://w3id.org/audit/ns/service#CollectPatientDataStepStep
+audit:CollectPatientDataStepStep rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/audit/ns/service#CollectPatientDataStepTransformation
+audit:CollectPatientDataStepTransformation rdf:type owl:NamedIndividual ,
+                                                    audit:Transformation ;
+                                           audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/collect-patient-data-step.json" ;
+                                           audit:hasMappingLocalPath "src/main/resources/auditMetadata/project/mapping/collect-patient-data-step.rml" ;
+                                           rdfs:label "CollectPatientDataStepTransformation" ;
+                                           audit:hasMappingType "RML" .
+
+
+###  https://w3id.org/audit/ns/service#CollectPatientDataStepValidation
+audit:CollectPatientDataStepValidation rdf:type owl:NamedIndividual ,
+                                                audit:Validation ;
+                                       audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/collect-patient-data-step.json" ;
+                                       rdfs:label "CollectPatientDataStepValidation" .
+
+
+###  https://w3id.org/audit/ns/service#CollectTrainingDataStep
+audit:CollectTrainingDataStep rdf:type owl:NamedIndividual ,
+                                       p-plan:Step ,
+                                       audit:Receive ;
+                              audit:hasTransformationFunction audit:CollectTrainingDataStepTransformation ;
+                              audit:isBasedOnStep audit:CollectTrainingDataStepStep ;
+                              p-plan:hasOutputVar audit:RawTrainingData_Var ;
+                              p-plan:isStepOfPlan audit:AIWorkflow ;
+                              rdfs:label "Collect Training Data Step" ,
+                                         "CollectTrainingDataStep" ;
+                              audit:hasSourceType "JSON" ;
+                              audit:hasValidationFunction audit:CollectTrainingDataStepValidation .
+
+
+###  https://w3id.org/audit/ns/service#CollectTrainingDataStepStep
+audit:CollectTrainingDataStepStep rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/audit/ns/service#CollectTrainingDataStepTransformation
+audit:CollectTrainingDataStepTransformation rdf:type owl:NamedIndividual ,
+                                                     audit:Transformation ;
+                                            audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/collect-training-data-step.json" ;
+                                            audit:hasMappingLocalPath "src/main/resources/auditMetadata/project/mapping/collect-training-data-step.rml" ;
+                                            rdfs:label "CollectTrainingDataStepTransformation" ;
+                                            audit:hasMappingType "RML" .
+
+
+###  https://w3id.org/audit/ns/service#CollectTrainingDataStepValidation
+audit:CollectTrainingDataStepValidation rdf:type owl:NamedIndividual ,
+                                                 audit:Validation ;
+                                        audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/collect-training-data-step.json" ;
+                                        rdfs:label "CollectTrainingDataStepValidation" .
+
+
+###  https://w3id.org/audit/ns/service#ExampleAISystem
+audit:ExampleAISystem rdf:type owl:NamedIndividual ,
+                               audit:AISystem ,
+                               audit:System ;
+                      audit:hasService audit:Query18 ;
+                      rdfs:label "Example AI System" ;
+                      audit:hasPlan audit:SystemAuditPlan .
+
+
+###  https://w3id.org/audit/ns/service#Gender
+audit:Gender rdf:type owl:NamedIndividual ,
+                      audit:Feature ;
+             rdfs:comment "Patient's gender or sex." ;
+             rdfs:label "Gender" .
+
+
+###  https://w3id.org/audit/ns/service#Medical
+audit:Medical rdf:type owl:NamedIndividual ,
+                       audit:Domain ;
+              rdfs:label "Medical Domain" .
+
+
+###  https://w3id.org/audit/ns/service#MedicalData_Var
+audit:MedicalData_Var rdf:type owl:NamedIndividual ,
+                               p-plan:Variable ;
+                      rdfs:label "Medical Data Variable" .
+
+
+###  https://w3id.org/audit/ns/service#OtherProbableParameter
+audit:OtherProbableParameter rdf:type owl:NamedIndividual ,
+                                      audit:Feature ;
+                             rdfs:comment "Placeholder for additional features like cholesterol, BMI, etc." ;
+                             rdfs:label "Other Probable Parameter" .
+
+
+###  https://w3id.org/audit/ns/service#Pre-processTrainingDataStep
+audit:Pre-processTrainingDataStep rdf:type owl:NamedIndividual ,
+                                           audit:Receive ;
+                                  audit:hasTransformationFunction audit:Pre-processTrainingDataStepTransformation ;
+                                  audit:isBasedOnStep audit:Pre-processTrainingDataStepStep ;
+                                  rdfs:label "Pre-processTrainingDataStep" ;
+                                  audit:hasSourceType "JSON" ;
+                                  audit:hasValidationFunction audit:Pre-processTrainingDataStepValidation .
+
+
+###  https://w3id.org/audit/ns/service#Pre-processTrainingDataStepStep
+audit:Pre-processTrainingDataStepStep rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/audit/ns/service#Pre-processTrainingDataStepTransformation
+audit:Pre-processTrainingDataStepTransformation rdf:type owl:NamedIndividual ,
+                                                         audit:Transformation ;
+                                                audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/pre-process-training-data-step.json" ;
+                                                audit:hasMappingLocalPath "src/main/resources/auditMetadata/project/mapping/pre-process-training-data-step.rml" ;
+                                                rdfs:label "Pre-processTrainingDataStepTransformation" ;
+                                                audit:hasMappingType "RML" .
+
+
+###  https://w3id.org/audit/ns/service#Pre-processTrainingDataStepValidation
+audit:Pre-processTrainingDataStepValidation rdf:type owl:NamedIndividual ,
+                                                     audit:Validation ;
+                                            audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/pre-process-training-data-step.json" ;
+                                            rdfs:label "Pre-processTrainingDataStepValidation" .
+
+
+###  https://w3id.org/audit/ns/service#PreProcessPatientDataStep
+audit:PreProcessPatientDataStep rdf:type owl:NamedIndividual ,
+                                         p-plan:Step ;
+                                p-plan:hasInputVar audit:RawPatientData_Var ;
+                                p-plan:hasOutputVar audit:PreprocessedPatientData_Var ;
+                                p-plan:isStepOfPlan audit:AIWorkflow ;
+                                p-plan:wasPrecededBy audit:CollectPatientDataStep ;
+                                rdfs:label "Pre-process Patient Data Step" .
+
+
+###  https://w3id.org/audit/ns/service#PreProcessTrainingDataStep
+audit:PreProcessTrainingDataStep rdf:type owl:NamedIndividual ,
+                                          p-plan:Step ;
+                                 p-plan:hasInputVar audit:RawTrainingData_Var ;
+                                 p-plan:hasOutputVar audit:CleanedTrainingData_Var ;
+                                 p-plan:isStepOfPlan audit:AIWorkflow ;
+                                 p-plan:wasPrecededBy audit:CollectTrainingDataStep ;
+                                 rdfs:label "Pre-process Training Data Step" .
+
+
+###  https://w3id.org/audit/ns/service#PredictAdverseEffects
+audit:PredictAdverseEffects rdf:type owl:NamedIndividual ,
+                                     audit:Task ;
+                            rdfs:comment "High-level AI objective in the Medical domain." ;
+                            rdfs:label "Predict health-adverse effects based on patient's data" .
+
+
+###  https://w3id.org/audit/ns/service#PredictionResults_Var
+audit:PredictionResults_Var rdf:type owl:NamedIndividual ,
+                                     p-plan:Variable ;
+                            rdfs:label "Prediction Results Variable" .
+
+
+###  https://w3id.org/audit/ns/service#PreparedData_Var
+audit:PreparedData_Var rdf:type owl:NamedIndividual ,
+                                p-plan:Variable ;
+                       rdfs:label "Prepared Data Variable" .
+
+
+###  https://w3id.org/audit/ns/service#PreprocessedPatientData_Var
+audit:PreprocessedPatientData_Var rdf:type owl:NamedIndividual ,
+                                           p-plan:Variable ;
+                                  rdfs:label "Preprocessed Patient Data Variable" .
+
+
+###  https://w3id.org/audit/ns/service#Query18
+audit:Query18 rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/audit/ns/service#RawPatientData_Var
+audit:RawPatientData_Var rdf:type owl:NamedIndividual ,
+                                  p-plan:Variable ;
+                         rdfs:label "Raw Patient Data Variable" .
+
+
+###  https://w3id.org/audit/ns/service#RawTrainingData_Var
+audit:RawTrainingData_Var rdf:type owl:NamedIndividual ,
+                                   p-plan:Variable ;
+                          audit:includesFeature audit:Age ,
+                                                audit:BloodPressure ,
+                                                audit:Gender ,
+                                                audit:OtherProbableParameter ;
+                          rdfs:label "Raw Training Data Variable" .
+
+
+###  https://w3id.org/audit/ns/service#RunAIModelService
+audit:RunAIModelService rdf:type owl:NamedIndividual ,
+                                 audit:Receive ;
+                        audit:hasTransformationFunction audit:RunAIModelServiceTransformation ;
+                        audit:isBasedOnStep audit:RunAIModelStep ;
+                        rdfs:label "RunAIModelService" ;
+                        audit:hasSourceType "JSON" ;
+                        audit:hasValidationFunction audit:RunAIModelServiceValidation .
+
+
+###  https://w3id.org/audit/ns/service#RunAIModelServiceTransformation
+audit:RunAIModelServiceTransformation rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/audit/ns/service#RunAIModelStep
+audit:RunAIModelStep rdf:type owl:NamedIndividual ,
+                              p-plan:Step ,
+                              audit:Receive ;
+                     audit:hasTransformationFunction audit:RunAIModelStepTransformation ;
+                     audit:isBasedOnStep audit:RunAIModelStepStep ;
+                     p-plan:hasInputVar audit:PreparedData_Var ,
+                                        audit:PreprocessedPatientData_Var ;
+                     p-plan:hasOutputVar audit:PredictionResults_Var ,
+                                         audit:TrainedMLModel_Var ;
+                     p-plan:isStepOfPlan audit:AIWorkflow ;
+                     p-plan:wasPrecededBy audit:PreProcessPatientDataStep ,
+                                          audit:TrainMLModelStep ;
+                     rdfs:label "Run AI Model Step" ,
+                                "RunAIModelStep" ;
+                     audit:hasSourceType "JSON" ;
+                     audit:hasValidationFunction audit:RunAIModelStepValidation .
+
+
+###  https://w3id.org/audit/ns/service#RunAIModelStepStep
+audit:RunAIModelStepStep rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/audit/ns/service#RunAIModelStepTransformation
+audit:RunAIModelStepTransformation rdf:type owl:NamedIndividual ,
+                                            audit:Transformation ;
+                                   audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/run-ai-model-step.json" ;
+                                   audit:hasMappingLocalPath "src/main/resources/auditMetadata/project/mapping/run-ai-model-step.rml" ;
+                                   rdfs:label "RunAIModelStepTransformation" ;
+                                   audit:hasMappingType "RML" .
+
+
+###  https://w3id.org/audit/ns/service#RunAIModelStepValidation
+audit:RunAIModelStepValidation rdf:type owl:NamedIndividual ,
+                                        audit:Validation ;
+                               audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/run-ai-model-step.json" ;
+                               rdfs:label "RunAIModelStepValidation" .
+
+
+###  https://w3id.org/audit/ns/service#StartDateParameter
+audit:StartDateParameter rdf:type owl:NamedIndividual ,
+                                  audit:Parameter ;
+                         rdfs:label "startDate" ;
+                         audit:hasParameterName "start" ;
+                         audit:hasParameterType xsd:dateTime .
+
+
+###  https://w3id.org/audit/ns/service#SystemAuditPlan
+audit:SystemAuditPlan rdf:type owl:NamedIndividual ,
+                               audit:AuditProcedure .
+
+
+###  https://w3id.org/audit/ns/service#TrainMLModelStep
+audit:TrainMLModelStep rdf:type owl:NamedIndividual ,
+                                p-plan:Step ,
+                                audit:Receive ;
+                       audit:hasTransformationFunction audit:TrainMLModelStepTransformation ;
+                       audit:isBasedOnStep audit:TrainMLModelStepStep ;
+                       p-plan:hasInputVar audit:CleanedTrainingData_Var ;
+                       p-plan:hasOutputVar audit:PreparedData_Var ;
+                       p-plan:isStepOfPlan audit:AIWorkflow ;
+                       p-plan:wasPrecededBy audit:PreProcessTrainingDataStep ;
+                       rdfs:label "Train ML Model Step" ,
+                                  "TrainMLModelStep" ;
+                       audit:hasSourceType "JSON" ;
+                       audit:hasValidationFunction audit:TrainMLModelStepValidation .
+
+
+###  https://w3id.org/audit/ns/service#TrainMLModelStepStep
+audit:TrainMLModelStepStep rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/audit/ns/service#TrainMLModelStepTransformation
+audit:TrainMLModelStepTransformation rdf:type owl:NamedIndividual ,
+                                              audit:Transformation ;
+                                     audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/train-ml-model-step.json" ;
+                                     audit:hasMappingLocalPath "src/main/resources/auditMetadata/project/mapping/train-ml-model-step.rml" ;
+                                     rdfs:label "TrainMLModelStepTransformation" ;
+                                     audit:hasMappingType "RML" .
+
+
+###  https://w3id.org/audit/ns/service#TrainMLModelStepValidation
+audit:TrainMLModelStepValidation rdf:type owl:NamedIndividual ,
+                                          audit:Validation ;
+                                 audit:hasJsonSchemaLocalPath "src/main/resources/auditMetadata/project/source/train-ml-model-step.json" ;
+                                 rdfs:label "TrainMLModelStepValidation" .
+
+
+###  https://w3id.org/audit/ns/service#TrainedMLModel_Var
+audit:TrainedMLModel_Var rdf:type owl:NamedIndividual ,
+                                  p-plan:Variable ;
+                         rdfs:label "Trained ML Model Variable" .
+
+
+###  https://w3id.org/audit/ns/service#UUIDParameter
+audit:UUIDParameter rdf:type owl:NamedIndividual ,
+                             audit:Parameter ;
+                    rdfs:label "desired_UUID" ;
+                    audit:hasParameterName "uuid" ;
+                    audit:hasParameterType xsd:string .
+
+
+###  https://w3id.org/audit/ns/service#includesFeature
+audit:includesFeature rdf:type owl:NamedIndividual ,
+                               rdfs:Property .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+audit:includesFeature rdfs:comment "Indicates which features or parameters are required in this dataset." ;
+                      rdfs:label "includes feature" .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

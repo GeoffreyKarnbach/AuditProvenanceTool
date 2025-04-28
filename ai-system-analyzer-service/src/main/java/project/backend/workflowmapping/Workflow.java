@@ -2,9 +2,14 @@ package project.backend.workflowmapping;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ManagingClass {
+public class Workflow {
+
+    List<WorkflowStep> workflowSteps;
+
 }

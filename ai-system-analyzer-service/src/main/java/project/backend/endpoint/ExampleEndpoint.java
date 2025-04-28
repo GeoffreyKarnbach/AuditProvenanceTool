@@ -20,11 +20,11 @@ public class ExampleEndpoint {
 
     private final ExampleService exampleService;
 
-    @Secured("ROLE_USER")
     @GetMapping
-    @Operation(summary = "Example endpoint", security = @SecurityRequirement(name = "apiKey"))
+    @Operation(summary = "Example endpoint")
     @ResponseStatus(HttpStatus.OK)
     public void example() {
         log.info("GET /api/v1/example");
+        this.exampleService.example_method();
     }
 }
