@@ -1,9 +1,7 @@
 package project.backend.workflowmapping;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,14 +9,17 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"previousStep", "nextStep"})
 public class WorkflowStep {
 
     private String stepName;
 
     private Long stepNumber;
 
+    @JsonIgnore
     private WorkflowStep previousStep;
 
+    @JsonIgnore
     private WorkflowStep nextStep;
 
     private List<WorkflowAgent> workflowAgents;

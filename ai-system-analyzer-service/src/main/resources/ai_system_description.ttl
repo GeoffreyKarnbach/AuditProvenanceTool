@@ -1,4 +1,4 @@
-@prefix : <https://w3id.org/audit/ns/service##> .
+@prefix : <https://w3id.org/audit/ns/service#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -274,6 +274,7 @@ audit:CollectPatientDataStep rdf:type owl:NamedIndividual ,
                              p-plan:hasInputVar audit:MedicalData_Var ;
                              p-plan:hasOutputVar audit:RawPatientData_Var ;
                              p-plan:isStepOfPlan audit:AIWorkflow ;
+                             p-plan:wasPrecededBy audit:TrainMLModelStep ;
                              rdfs:label "Collect Patient Data Step" ,
                                         "CollectPatientDataStep" ;
                              audit:hasSourceType "JSON" ;
@@ -489,8 +490,7 @@ audit:RunAIModelStep rdf:type owl:NamedIndividual ,
                      p-plan:hasOutputVar audit:PredictionResults_Var ,
                                          audit:TrainedMLModel_Var ;
                      p-plan:isStepOfPlan audit:AIWorkflow ;
-                     p-plan:wasPrecededBy audit:PreProcessPatientDataStep ,
-                                          audit:TrainMLModelStep ;
+                     p-plan:wasPrecededBy audit:PreProcessPatientDataStep ;
                      rdfs:label "Run AI Model Step" ,
                                 "RunAIModelStep" ;
                      audit:hasSourceType "JSON" ;
