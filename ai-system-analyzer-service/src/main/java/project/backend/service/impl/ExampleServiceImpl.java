@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 @Service
 @Slf4j
@@ -18,7 +19,13 @@ public class ExampleServiceImpl implements ExampleService {
     public void example_method() {
         Model model = ModelFactory.createDefaultModel();
         try {
-            FileReader reader = new FileReader("src/main/resources/ai_system_description.ttl");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("ai_system_description.ttl");
+            if (inputStream == null) {
+                log.error("File not found");
+                return;
+            }
+
+            InputStreamReader reader = new InputStreamReader(inputStream);
             model.read(reader, null, "TTL");
         } catch (Exception e) {
             log.error("Error reading ontology file", e);
