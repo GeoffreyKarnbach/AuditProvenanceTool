@@ -16,47 +16,8 @@
     </button>
 
     <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-2 mr-5 w-100">
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            *ngIf="!userService.isLoggedIn()"
-            routerLink="/login"
-            routerLinkActive="active"
-            >Login</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            *ngIf="!userService.isLoggedIn()"
-            routerLink="/register"
-            routerLinkActive="active"
-            >Register</a
-          >
-        </li>
-      </ul>
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item" style="margin-right: 1em">
-          <a
-            class="navbar-brand"
-            *ngIf="userService.isLoggedIn()"
-            routerLink="/"
-            (click)="userService.logout()"
-          >
-            <img src="/assets/logout.png" />
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            class="navbar-brand"
-            routerLink="/user"
-            *ngIf="userService.isLoggedIn()"
-          >
-            <img src="/assets/user.png" />
-          </a>
-        </li>
-      </ul>
+      <ul class="navbar-nav ms-2 mr-5 w-100"></ul>
+      <ul class="navbar-nav ms-auto"></ul>
     </div>
   </div>
 </nav>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterPageComponent } from './register-page.component';
+import { WorkflowPageComponent } from './workflow-page.component';
 
-describe('RegisterPageComponent', () => {
-  let component: RegisterPageComponent;
-  let fixture: ComponentFixture<RegisterPageComponent>;
+describe('WorkflowPageComponent', () => {
+  let component: WorkflowPageComponent;
+  let fixture: ComponentFixture<WorkflowPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RegisterPageComponent ]
+      declarations: [WorkflowPageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RegisterPageComponent);
+    fixture = TestBed.createComponent(WorkflowPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

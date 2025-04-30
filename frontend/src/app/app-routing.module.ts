@@ -1,18 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {
-  ExamplePageComponent,
-  LoginPageComponent,
-  RegisterPageComponent,
-  UserPageComponent,
-} from './components';
-import { AuthGuard } from './guards';
+import { ExamplePageComponent } from './components';
+import { WorkflowPageComponent } from './components/pages/workflow-page/workflow-page.component';
 
 const routes: Routes = [
-  { path: 'register', component: RegisterPageComponent },
-  { path: 'login', component: LoginPageComponent },
-  { path: 'user', component: UserPageComponent, canActivate: [AuthGuard] },
-  { path: '**', component: ExamplePageComponent },
+  { path: 'workflow', component: WorkflowPageComponent },
+  { path: '', component: ExamplePageComponent },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

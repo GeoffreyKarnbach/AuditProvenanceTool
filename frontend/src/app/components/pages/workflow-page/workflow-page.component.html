@@ -1,0 +1,67 @@
+<div class="container mt-5">
+  <div class="alert alert-info mt-4" role="alert">
+    <h5 class="alert-heading">📄 What Are These Files?</h5>
+    <p>
+      To analyze your AI system and its provenance, please upload the following
+      two files:
+    </p>
+    <ul>
+      <li>
+        <strong>TTL File (.ttl)</strong><br />
+        This file contains a structured <em>workflow description</em> of your AI
+        system, written in the
+        <a
+          href="https://www.w3.org/TR/turtle/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Turtle (TTL)</a
+        >
+        RDF format. It defines the components, processes, and their
+        relationships within the AI pipeline.
+      </li>
+      <li class="mt-2">
+        <strong>TXT File (.txt)</strong><br />
+        This file includes a list of <em>provenance-related questions</em> you
+        want to ask about the AI workflow. Each line typically represents a
+        single question related to system behavior, data lineage, or
+        decision-making.
+      </li>
+    </ul>
+    <p class="mb-0">
+      By uploading both files, our system can link your questions to specific
+      workflow components for analysis and reasoning.
+    </p>
+  </div>
+
+  <div class="row">
+    <!-- TTL File Drop Zone -->
+    <div class="col-md-6 mb-4">
+      <div
+        class="drop-zone p-4 text-center border rounded"
+        [class.drag-over]="dragOverTtl"
+        (drop)="onFileDrop($event, 'ttl')"
+        (dragover)="onDragOver($event, 'ttl')"
+        (dragleave)="onDragLeave('ttl')"
+      >
+        <p class="mb-2"><strong>Drop your .ttl file here</strong></p>
+        <p *ngIf="ttlFile" class="text-success">✔ {{ ttlFile.name }}</p>
+        <p *ngIf="!ttlFile" class="text-muted">Only .ttl files accepted</p>
+      </div>
+    </div>
+
+    <!-- TXT File Drop Zone -->
+    <div class="col-md-6 mb-4">
+      <div
+        class="drop-zone p-4 text-center border rounded"
+        [class.drag-over]="dragOverTxt"
+        (drop)="onFileDrop($event, 'txt')"
+        (dragover)="onDragOver($event, 'txt')"
+        (dragleave)="onDragLeave('txt')"
+      >
+        <p class="mb-2"><strong>Drop your .txt file here</strong></p>
+        <p *ngIf="txtFile" class="text-success">✔ {{ txtFile.name }}</p>
+        <p *ngIf="!txtFile" class="text-muted">Only .txt files accepted</p>
+      </div>
+    </div>
+  </div>
+</div>
