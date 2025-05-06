@@ -43,4 +43,22 @@ export class WorkflowPageComponent {
     if (type === 'ttl') this.dragOverTtl = false;
     if (type === 'txt') this.dragOverTxt = false;
   }
+
+  onSubmit() {
+    if (!this.ttlFile || !this.txtFile) {
+      alert('Please upload both TTL and TXT files.');
+      return;
+    }
+
+    this.backendService.uploadFiles(this.ttlFile, this.txtFile).subscribe({
+      next: (response) => {
+        console.log('Files uploaded successfully:', response);
+        alert('Files uploaded successfully!');
+      },
+      error: (error) => {
+        console.error('Error uploading files:', error);
+        alert('Error uploading files. Please try again.');
+      },
+    });
+  }
 }

@@ -10,4 +10,14 @@ export class BackendService {
   private workflowUri: string = this.globals.backendUri + '/workflow';
 
   constructor(private httpClient: HttpClient, private globals: Globals) {}
+
+  uploadFiles(ttlFile: File, txtFile: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('ttlFile', ttlFile);
+    formData.append('txtFile', txtFile);
+
+    return this.httpClient.post<string>(this.workflowUri, formData, {
+      headers: {},
+    });
+  }
 }

@@ -64,4 +64,11 @@
       </div>
     </div>
   </div>
+  <button
+    class="btn btn-primary mt-3"
+    [disabled]="!ttlFile || !txtFile"
+    (click)="onSubmit()"
+  >
+    Submit Files
+  </button>
 </div>
