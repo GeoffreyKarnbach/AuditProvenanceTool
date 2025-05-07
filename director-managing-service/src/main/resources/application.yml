@@ -27,7 +27,7 @@ spring:
     open-in-view: false
 
 server:
-  port: 5002
+  port: 5502
   servlet:
     encoding:
       charset: UTF-8

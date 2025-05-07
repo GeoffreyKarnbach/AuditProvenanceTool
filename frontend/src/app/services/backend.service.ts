@@ -18,6 +18,7 @@ export class BackendService {
 
     return this.httpClient.post<string>(this.workflowUri, formData, {
       headers: {},
+      responseType: 'text' as 'json',
     });
   }
 }

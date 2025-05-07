@@ -1,0 +1,12 @@
+{
+  "step": [
+    "label",
+    "id",
+    "start_time",
+    "end_time",
+    "inputs",
+    "outputs",
+    "agent"
+  ],
+  "variable": ["label", "id", "location"]
+}

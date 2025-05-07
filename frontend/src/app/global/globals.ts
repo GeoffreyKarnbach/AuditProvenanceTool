@@ -8,7 +8,7 @@ export class Globals {
 
   private findBackendUrl(): string {
     if (window.location.port === '4200') {
-      return 'http://localhost:5003/api/v1';
+      return 'http://localhost:5502/api/v1';
     } else {
       return (
         window.location.protocol +

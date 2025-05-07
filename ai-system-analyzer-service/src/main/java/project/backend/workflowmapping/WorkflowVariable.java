@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class WorkflowVariable {
 
     private String variableName;
+
+    private String variableType;
 }

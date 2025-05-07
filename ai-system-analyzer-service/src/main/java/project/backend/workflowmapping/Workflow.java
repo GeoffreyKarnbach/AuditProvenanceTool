@@ -11,5 +11,6 @@ import java.util.List;
 public class Workflow {
 
     List<WorkflowStep> workflowSteps;
+    //Map <ID, Step>
 
 }

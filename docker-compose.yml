@@ -1,25 +1,31 @@
 services:
+  unification-generation-service:
+    build: ./unification-generation-service
+    ports:
+      - "5503:5503"
+
   ai-system-analyzer-service:
     build: ./ai-system-analyzer-service
     ports:
-      - "5000:5000"
+      - "5500:5500"
 
   pq-analyzer-service:
     build: ./pq-analyzer-service
     ports:
-      - "5003:5003"
+      - "5501:5501"
 
   director-managing-service:
     build: ./director-managing-service
     ports:
-      - "5002:5002"
+      - "5502:5502"
     depends_on:
       - ai-system-analyzer-service
       - pq-analyzer-service
+      - unification-generation-service
 
   frontend:
     build: ./frontend
     ports:
-      - "5004:80"
+      - "5504:80"
     depends_on:
       - director-managing-service

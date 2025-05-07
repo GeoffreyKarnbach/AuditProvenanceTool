@@ -16,9 +16,11 @@ public class WorkflowStep {
 
     private Long stepNumber;
 
+    // Nur die ID
     @JsonIgnore
     private WorkflowStep previousStep;
 
+    // Nur die ID
     @JsonIgnore
     private WorkflowStep nextStep;
 
@@ -27,4 +29,6 @@ public class WorkflowStep {
     private List<WorkflowVariable> workflowInputVariables;
 
     private List<WorkflowVariable> workflowOutputVariables;
+
+    private String stepType;
 }
