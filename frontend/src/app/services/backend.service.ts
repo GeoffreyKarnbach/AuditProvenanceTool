@@ -21,4 +21,16 @@ export class BackendService {
       responseType: 'text' as 'json',
     });
   }
+
+  ttlAnalyzeComplete(processId: string): Observable<boolean> {
+    return this.httpClient.get<any>(
+      `${this.workflowUri}/ttl-analyze-complete/${processId}`
+    );
+  }
+
+  txtAnalyzeComplete(processId: string): Observable<boolean> {
+    return this.httpClient.get<any>(
+      `${this.workflowUri}/txt-analyze-complete/${processId}`
+    );
+  }
 }

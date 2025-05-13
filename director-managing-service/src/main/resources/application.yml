@@ -3,7 +3,6 @@ logging:
   level:
     root: INFO
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
-    at.ac.tuwien.sepm.groupphase.backend.aspect: DEBUG
   pattern:
     level: r=%X{r} ip=%X{ip} u=%X{u} %5p
   aspect:
@@ -45,33 +44,6 @@ security:
     audience: secure-app
     # 12 hours in milliseconds
     expiration-time: 43200000
-
-management:
-  server:
-    port: 5003
-  endpoint:
-    shutdown:
-      enabled: true
-    metrics:
-      enabled: true
-    prometheus:
-      enabled: true
-    health:
-      probes:
-        enabled: true
-  endpoints:
-    web:
-      exposure:
-        include:
-          - health
-          - info
-          - shutdown
-          - metrics
-          - env
-  prometheus:
-    metrics:
-      export:
-        enabled: true
 
 ---
 spring:

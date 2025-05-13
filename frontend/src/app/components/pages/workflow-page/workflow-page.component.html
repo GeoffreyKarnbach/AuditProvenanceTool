@@ -33,42 +33,106 @@
     </p>
   </div>
 
+  <p *ngIf="processId">Current process ID: {{ processId }}</p>
+
   <div class="row">
-    <!-- TTL File Drop Zone -->
-    <div class="col-md-6 mb-4">
+    <div class="mb-4 position-relative">
+      <div
+        *ngIf="ttlServerProcessing"
+        class="position-absolute w-100 h-100 top-0 start-0 d-flex justify-content-center align-items-center"
+        style="background: rgba(220, 220, 220, 0.7); z-index: 10"
+      >
+        <div
+          class="spinner-border text-primary"
+          role="status"
+          style="width: 3rem; height: 3rem"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       <div
         class="drop-zone p-4 text-center border rounded"
         [class.drag-over]="dragOverTtl"
-        (drop)="onFileDrop($event, 'ttl')"
-        (dragover)="onDragOver($event, 'ttl')"
-        (dragleave)="onDragLeave('ttl')"
+        (drop)="
+          !ttlServerProcessing && !ttlProcessed && onFileDrop($event, 'ttl')
+        "
+        (dragover)="
+          !ttlServerProcessing && !ttlProcessed && onDragOver($event, 'ttl')
+        "
+        (dragleave)="
+          !ttlServerProcessing && !ttlProcessed && onDragLeave('ttl')
+        "
       >
-        <p class="mb-2"><strong>Drop your .ttl file here</strong></p>
-        <p *ngIf="ttlFile" class="text-success">✔ {{ ttlFile.name }}</p>
-        <p *ngIf="!ttlFile" class="text-muted">Only .ttl files accepted</p>
+        <div *ngIf="!ttlProcessed">
+          <p class="mb-2"><strong>Drop your .ttl file here</strong></p>
+          <p *ngIf="ttlFile" class="text-success">✔ {{ ttlFile.name }}</p>
+          <p *ngIf="!ttlFile" class="text-muted">Only .ttl files accepted</p>
+        </div>
+        <div *ngIf="ttlProcessed">
+          <p class="mb-2"><strong>TTL File Processed</strong></p>
+          <span><i class="bi bi-check-circle-fill text-success"></i></span>
+        </div>
       </div>
     </div>
-
-    <!-- TXT File Drop Zone -->
-    <div class="col-md-6 mb-4">
+    <div class="mb-4 position-relative">
+      <div
+        *ngIf="txtServerProcessing"
+        class="position-absolute w-100 h-100 top-0 start-0 d-flex justify-content-center align-items-center"
+        style="background: rgba(220, 220, 220, 0.7); z-index: 10"
+      >
+        <div
+          class="spinner-border text-primary"
+          role="status"
+          style="width: 3rem; height: 3rem"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       <div
         class="drop-zone p-4 text-center border rounded"
         [class.drag-over]="dragOverTxt"
-        (drop)="onFileDrop($event, 'txt')"
-        (dragover)="onDragOver($event, 'txt')"
-        (dragleave)="onDragLeave('txt')"
+        (drop)="
+          !txtServerProcessing && !ttlProcessed && onFileDrop($event, 'txt')
+        "
+        (dragover)="
+          !txtServerProcessing && !ttlProcessed && onDragOver($event, 'txt')
+        "
+        (dragleave)="
+          !txtServerProcessing && !ttlProcessed && onDragLeave('txt')
+        "
       >
-        <p class="mb-2"><strong>Drop your .txt file here</strong></p>
-        <p *ngIf="txtFile" class="text-success">✔ {{ txtFile.name }}</p>
-        <p *ngIf="!txtFile" class="text-muted">Only .txt files accepted</p>
+        <div *ngIf="txtProcessed">
+          <p class="mb-2"><strong>TXT File Processed</strong></p>
+          <span><i class="bi bi-check-circle-fill text-success"></i></span>
+        </div>
+        <div *ngIf="!txtProcessed">
+          <p class="mb-2"><strong>Drop your .txt file here</strong></p>
+          <p *ngIf="txtFile" class="text-success">✔ {{ txtFile.name }}</p>
+          <p *ngIf="!txtFile" class="text-muted">Only .txt files accepted</p>
+        </div>
       </div>
     </div>
+
+    <button
+      class="btn btn-primary mt-3 d-block mx-auto"
+      [disabled]="!ttlFile || !txtFile"
+      (click)="onSubmit()"
+      *ngIf="
+        !ttlServerProcessing &&
+        !txtServerProcessing &&
+        !ttlProcessed &&
+        !txtProcessed
+      "
+    >
+      Submit Files
+    </button>
+
+    <button
+      class="btn btn-primary mt-3 d-block mx-auto"
+      (click)="goToUnification()"
+      *ngIf="txtProcessed && ttlProcessed"
+    >
+      Continue to Unification Step
+    </button>
   </div>
-  <button
-    class="btn btn-primary mt-3"
-    [disabled]="!ttlFile || !txtFile"
-    (click)="onSubmit()"
-  >
-    Submit Files
-  </button>
 </div>

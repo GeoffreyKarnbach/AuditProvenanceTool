@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -7,13 +8,21 @@ import { BackendService } from 'src/app/services/backend.service';
   styleUrl: './workflow-page.component.scss',
 })
 export class WorkflowPageComponent {
-  constructor(private backendService: BackendService) {}
+  constructor(private backendService: BackendService, private router: Router) {}
 
   ttlFile: File | null = null;
   txtFile: File | null = null;
 
   dragOverTtl = false;
   dragOverTxt = false;
+
+  ttlServerProcessing: boolean = false;
+  ttlProcessed: boolean = false;
+
+  txtServerProcessing: boolean = false;
+  txtProcessed: boolean = false;
+
+  processId: string | null = null;
 
   onFileDrop(event: DragEvent, type: 'ttl' | 'txt') {
     event.preventDefault();
@@ -54,11 +63,52 @@ export class WorkflowPageComponent {
       next: (response) => {
         console.log('Files uploaded successfully:', response);
         alert('Files uploaded successfully!');
+        this.ttlServerProcessing = true;
+        this.txtServerProcessing = true;
+        this.processId = response;
+
+        const intervalTtl = setInterval(() => {
+          this.backendService.ttlAnalyzeComplete(response).subscribe({
+            next: (isComplete) => {
+              if (isComplete) {
+                clearInterval(intervalTtl);
+                this.ttlServerProcessing = false;
+                this.ttlProcessed = true;
+              }
+            },
+            error: (error) => {
+              console.error('Error checking analysis status:', error);
+            },
+          });
+        }, 1000);
+
+        const intervalTxt = setInterval(() => {
+          this.backendService.txtAnalyzeComplete(response).subscribe({
+            next: (isComplete) => {
+              if (isComplete) {
+                clearInterval(intervalTxt);
+                this.txtServerProcessing = false;
+                this.txtProcessed = true;
+              }
+            },
+            error: (error) => {
+              console.error('Error checking analysis status:', error);
+            },
+          });
+        }, 1000);
       },
       error: (error) => {
         console.error('Error uploading files:', error);
         alert('Error uploading files. Please try again.');
       },
     });
+  }
+
+  goToUnification() {
+    if (this.ttlProcessed && this.txtProcessed) {
+      this.router.navigate(['/unification', this.processId]);
+    } else {
+      alert('Please wait for both files to be processed.');
+    }
   }
 }

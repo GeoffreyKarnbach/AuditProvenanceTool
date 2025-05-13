@@ -22,6 +22,8 @@ services:
       - ai-system-analyzer-service
       - pq-analyzer-service
       - unification-generation-service
+    environment:
+      - mode=prod
 
   frontend:
     build: ./frontend
@@ -29,3 +31,5 @@ services:
       - "5504:80"
     depends_on:
       - director-managing-service
+    environment:
+      - mode=prod

@@ -18,6 +18,7 @@ import {
 } from './components';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkflowPageComponent } from './components/pages/workflow-page/workflow-page.component';
+import { UnificationPageComponent } from './components/pages/unification-page/unification-page.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { WorkflowPageComponent } from './components/pages/workflow-page/workflow
     CustomCalendarComponent,
     FooterComponent,
     WorkflowPageComponent,
+    UnificationPageComponent,
   ],
   imports: [
     BrowserModule,
