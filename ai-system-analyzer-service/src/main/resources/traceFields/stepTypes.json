@@ -1,0 +1,18 @@
+{
+    "https://w3id.org/audit/ns#Generation": [
+        "GenerationStepA",
+        "GenerationStepB"
+    ],
+    "https://w3id.org/audit/ns#Inference": [
+        "InferenceStepA",
+        "InferenceStepB"
+    ],
+    "https://w3id.org/audit/ns#Training": [
+        "TrainingStepA",
+        "TrainingStepB"
+    ],
+    "https://w3id.org/audit/ns#Transformation": [
+        "TransformationStepA",
+        "TransformationStepB"
+    ]
+}

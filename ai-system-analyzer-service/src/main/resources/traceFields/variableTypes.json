@@ -1,0 +1,18 @@
+{
+    "https://w3id.org/audit/ns#MLInferenceResult" : [
+        "InferenceResultA",
+        "InferenceResultB"
+    ],
+    "https://w3id.org/audit/ns#Model" : [
+        "ModelVarA",
+        "ModelVarB"
+    ],
+    "https://w3id.org/audit/ns#StatisticalModel": [
+        "StatisticalModelVarA",
+        "StatisticalModelVarB"
+    ],
+    "https://w3id.org/audit/ns#TrainingDataset": [
+        "TrainingDatasetVarA",
+        "TrainingDatasetVarB"
+    ]
+}

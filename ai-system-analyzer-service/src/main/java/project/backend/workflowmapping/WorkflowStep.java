@@ -1,28 +1,30 @@
 package project.backend.workflowmapping;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.List;
 
+/**
+ * Represents a step in a workflow.
+ * A step has a unique ID, a name, a step number, previous and next step IDs,
+ * a list of agents, input and output variables, a potential subtype, and default trace fields.
+ * The previous and next step IDs only reference the IDs of the previous and next steps in the workflow.
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"previousStep", "nextStep"})
 public class WorkflowStep {
+
+    private String id;
 
     private String stepName;
 
     private Long stepNumber;
 
-    // Nur die ID
-    @JsonIgnore
-    private WorkflowStep previousStep;
+    private String previousStepId;
 
-    // Nur die ID
-    @JsonIgnore
-    private WorkflowStep nextStep;
+    private String nextStepId;
 
     private List<WorkflowAgent> workflowAgents;
 
@@ -30,5 +32,7 @@ public class WorkflowStep {
 
     private List<WorkflowVariable> workflowOutputVariables;
 
-    private String stepType;
+    private String stepSubtype;
+
+    private List<String> defaultTraceFields;
 }

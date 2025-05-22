@@ -1,0 +1,274 @@
+@prefix : <https://w3id.org/audit/ns/> .
+@prefix box: <http://example.org/boxology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix audit: <https://w3id.org/audit/ns#> .
+@prefix pplan: <http://purl.org/net/p-plan#> .
+@base <https://w3id.org/audit/ns/> .
+
+<http://example.org/audit/> rdf:type owl:Ontology .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  https://w3id.org/audit/ns#operate
+audit:operate rdf:type owl:AnnotationProperty ;
+              rdfs:subPropertyOf prov:wasAssociatedWith .
+
+
+###  http://purl.org/net/p-plan#hasInputVar
+pplan:hasInputVar rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/net/p-plan#hasOutputVar
+pplan:hasOutputVar rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/net/p-plan#isPrecededBy
+pplan:isPrecededBy rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/prov#wasAssociatedWith
+prov:wasAssociatedWith rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://w3id.org/audit/ns#operate
+audit:operate rdf:type owl:ObjectProperty ;
+              rdfs:domain audit:Actor ;
+              rdfs:range pplan:Step .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://w3id.org/audit/ns#Actor
+audit:Actor rdf:type owl:Class .
+
+
+###  https://w3id.org/audit/ns#Generation
+audit:Generation rdf:type owl:Class ;
+                 rdfs:subClassOf pplan:Step ;
+                 rdfs:label "Generation step" .
+
+
+###  https://w3id.org/audit/ns#Inference
+audit:Inference rdf:type owl:Class ;
+                rdfs:subClassOf pplan:Step ;
+                rdfs:label "Inference step" .
+
+
+###  https://w3id.org/audit/ns#MLInferenceResult
+audit:MLInferenceResult rdf:type owl:Class ;
+                        rdfs:subClassOf pplan:Variable ;
+                        rdfs:label "ML Inference Result" .
+
+
+###  https://w3id.org/audit/ns#Model
+audit:Model rdf:type owl:Class ;
+            rdfs:subClassOf pplan:Variable .
+
+
+###  https://w3id.org/audit/ns#StatisticalModel
+audit:StatisticalModel rdf:type owl:Class ;
+                       rdfs:subClassOf audit:Model ;
+                       rdfs:label "Statistical/ML Model" .
+
+
+###  https://w3id.org/audit/ns#Training
+audit:Training rdf:type owl:Class ;
+               rdfs:subClassOf pplan:Step ;
+               rdfs:label "Training step" .
+
+
+###  https://w3id.org/audit/ns#TrainingDataset
+audit:TrainingDataset rdf:type owl:Class ;
+                      rdfs:subClassOf pplan:Variable ;
+                      rdfs:label "Training Dataset" .
+
+
+###  https://w3id.org/audit/ns#Transformation
+audit:Transformation rdf:type owl:Class ;
+                     rdfs:subClassOf pplan:Step ;
+                     rdfs:label "Transformation step" .
+
+
+###  http://purl.org/net/p-plan#Step
+pplan:Step rdf:type owl:Class .
+
+
+###  http://purl.org/net/p-plan#Variable
+pplan:Variable rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://w3id.org/audit/ns#CleanedTrainingData
+audit:CleanedTrainingData rdf:type owl:NamedIndividual ,
+                                   audit:TrainingDataset ,
+                                   pplan:Variable ;
+                          rdfs:label "Cleaned Training Data" .
+
+
+###  https://w3id.org/audit/ns#CollectPatientData
+audit:CollectPatientData rdf:type owl:NamedIndividual ,
+                                  audit:Generation ,
+                                  pplan:Step ;
+                         pplan:isPrecededBy audit:TrainMLModel;
+                         pplan:hasOutputVar audit:DemographicSocialInfoData ,
+                                            audit:MedicalData ,
+                                            audit:RawPatientData ;
+                         rdfs:label "Collect Patient Data" .
+
+
+###  https://w3id.org/audit/ns#CollectTrainingData
+audit:CollectTrainingData rdf:type owl:NamedIndividual ,
+                                   audit:Generation ,
+                                   pplan:Step ;
+                          pplan:hasInputVar audit:TrainingDataCollectionTool;
+                          pplan:hasOutputVar audit:RawTrainingData ;
+                          rdfs:label "Collect Training Data" .
+
+
+###  https://w3id.org/audit/ns#DataCollectionTeam
+audit:DataCollectionTeam rdf:type owl:NamedIndividual ,
+                                  audit:Actor ;
+                         audit:operate audit:CollectTrainingData ;
+                         rdfs:label "Data Collection Team" .
+
+
+###  https://w3id.org/audit/ns#DemographicSocialInfoData
+audit:DemographicSocialInfoData rdf:type owl:NamedIndividual ,
+                                         pplan:Variable ;
+                                rdfs:label "Demographic & Social Information Data" .
+
+
+###  https://w3id.org/audit/ns#MLEngineeringTeam
+audit:MLEngineeringTeam rdf:type owl:NamedIndividual ,
+                                 audit:Actor ;
+                        audit:operate audit:PreprocessTrainingData ,
+                                      audit:TrainMLModel ;
+                        rdfs:label "ML Engineering Team" .
+
+
+###  https://w3id.org/audit/ns#MedicalData
+audit:MedicalData rdf:type owl:NamedIndividual ,
+                           pplan:Variable ;
+                  rdfs:label "Medical Data" .
+
+
+###  https://w3id.org/audit/ns#MedicalStaff
+audit:MedicalStaff rdf:type owl:NamedIndividual ,
+                            audit:Actor ;
+                   audit:operate audit:CollectPatientData ,
+                                 audit:PreprocessPatientData ,
+                                 audit:RunAIModel ;
+                   rdfs:label "Medical staff" .
+
+
+###  https://w3id.org/audit/ns#PredictionResults
+audit:PredictionResults rdf:type owl:NamedIndividual ,
+                                 audit:MLInferenceResult ,
+                                 pplan:Variable ;
+                        rdfs:label "Prediction Results" .
+
+
+###  https://w3id.org/audit/ns#PreparedData
+audit:PreparedData rdf:type owl:NamedIndividual ,
+                            audit:TrainingDataset ,
+                            pplan:Variable ;
+                   rdfs:label "Prepared Data" .
+
+
+###  https://w3id.org/audit/ns#PreprocessPatientData
+audit:PreprocessPatientData rdf:type owl:NamedIndividual ,
+                                     audit:Transformation ,
+                                     pplan:Step ;
+                            pplan:hasInputVar audit:RawPatientData ;
+                            pplan:hasOutputVar audit:PreprocessedPatientData ;
+                            pplan:isPrecededBy audit:CollectPatientData ;
+                            rdfs:label "Pre-process Patient Data" .
+
+
+###  https://w3id.org/audit/ns#PreprocessTrainingData
+audit:PreprocessTrainingData rdf:type owl:NamedIndividual ,
+                                      audit:Transformation ,
+                                      pplan:Step ;
+                             pplan:hasInputVar audit:RawTrainingData ;
+                             pplan:hasOutputVar audit:CleanedTrainingData ,
+                                                audit:PreparedData ;
+                             pplan:isPrecededBy audit:CollectTrainingData ;
+                             rdfs:label "Pre-process Training Data" .
+
+
+###  https://w3id.org/audit/ns#PreprocessedPatientData
+audit:PreprocessedPatientData rdf:type owl:NamedIndividual ,
+                                       pplan:Variable ;
+                              rdfs:label "Pre-processed Patient Data" .
+
+
+###  https://w3id.org/audit/ns#RawPatientData
+audit:RawPatientData rdf:type owl:NamedIndividual ,
+                              pplan:Variable ;
+                     rdfs:label "Raw Patient Data" .
+
+
+###  https://w3id.org/audit/ns#RawTrainingData
+audit:RawTrainingData rdf:type owl:NamedIndividual ,
+                               audit:TrainingDataset ,
+                               pplan:Variable ;
+                      rdfs:label "Raw Training Data" .
+
+###  https://w3id.org/audit/ns#TrainingDataCollectionTool
+audit:TrainingDataCollectionTool rdf:type owl:NamedIndividual ,
+                               audit:Processor ,
+                               pplan:Variable ;
+                      rdfs:label "Training Data Collection Tool" .
+
+###  https://w3id.org/audit/ns#RunAIModel
+audit:RunAIModel rdf:type owl:NamedIndividual ,
+                          audit:Inference ,
+                          pplan:Step ;
+                 pplan:hasInputVar audit:PreprocessedPatientData ,
+                                   audit:TrainedMLModel ;
+                 pplan:hasOutputVar audit:PredictionResults ;
+                 pplan:isPrecededBy audit:PreprocessPatientData ;
+                 rdfs:label "Run AI Model" .
+
+
+###  https://w3id.org/audit/ns#TrainMLModel
+audit:TrainMLModel rdf:type owl:NamedIndividual ,
+                            audit:Training ,
+                            pplan:Step ;
+                   pplan:hasInputVar audit:PreparedData ;
+                   pplan:hasOutputVar audit:TrainedMLModel ;
+                   pplan:isPrecededBy audit:PreprocessTrainingData ;
+                   rdfs:label "Train ML Model" .
+
+
+###  https://w3id.org/audit/ns#TrainedMLModel
+audit:TrainedMLModel rdf:type owl:NamedIndividual ,
+                              audit:StatisticalModel ,
+                              pplan:Variable ;
+                     rdfs:label "Trained ML Model" .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+audit:operate rdfs:label "operates" .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
