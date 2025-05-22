@@ -14,5 +14,10 @@
     "https://w3id.org/audit/ns#TrainingDataset": [
         "TrainingDatasetVarA",
         "TrainingDatasetVarB"
+    ],
+    "default": [
+        "label",
+        "id",
+        "location"
     ]
 }

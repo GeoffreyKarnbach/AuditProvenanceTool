@@ -143,7 +143,7 @@ public class TTLMapper {
                 .workflowInputVariables(inputVariables)
                 .workflowOutputVariables(outputVariables)
                 .stepSubtype(stepType)
-                .defaultTraceFields(List.of())
+                .defaultTraceFields(new ArrayList<>())
                 .build();
 
             steps.add(step);
@@ -170,7 +170,7 @@ public class TTLMapper {
             WorkflowAgent agent = WorkflowAgent.builder()
                 .id(uri)
                 .agentName(name)
-                .defaultTraceFields(List.of())
+                .defaultTraceFields(new ArrayList<>())
                 .build();
 
             agents.add(agent);
@@ -234,7 +234,7 @@ public class TTLMapper {
                 .id(uri)
                 .variableName(name)
                 .variableSubtype(varType)
-                .defaultTraceFields(List.of())
+                .defaultTraceFields(new ArrayList<>())
                 .build();
 
             variables.add(variable);

@@ -14,5 +14,14 @@
     "https://w3id.org/audit/ns#Transformation": [
         "TransformationStepA",
         "TransformationStepB"
+    ],
+    "default": [
+        "label",
+        "id",
+        "start_time",
+        "end_time",
+        "inputs",
+        "output",
+        "agent"
     ]
 }

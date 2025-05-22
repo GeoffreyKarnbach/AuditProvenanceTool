@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class WorkflowAgent {
 
-    public String id;
+    private String id;
 
     private String agentName;
 
