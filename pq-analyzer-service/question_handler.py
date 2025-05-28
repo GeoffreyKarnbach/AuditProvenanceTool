@@ -1,7 +1,8 @@
 import spacy
 import pattern_checker
-import question_handler
 import question_rewriter
+import question_formalizer
+import prov_mapper
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -14,7 +15,6 @@ def handle_questions(questions):
 
     return handled_questions
 
-
 def handle_question(question):
 
     print(f"Handling question: {question}")
@@ -26,13 +26,29 @@ def handle_question(question):
     patterns = pattern_checker.check_for_common_patterns(doc)
     print(f"Patterns: {patterns}")
 
-    question = question_rewriter.question_rewriter(doc, patterns)
-    print(f"Rewritten question: {question}")
+    rewritten_question = question_rewriter.question_rewriter(question, patterns)
+    print(f"Rewritten question: {rewritten_question}")
 
-    return question
+    formalized_question = question_formalizer.formalize_question(rewritten_question)
+    print(f"Formalized question: {formalized_question}")
 
+    mapped_to_prov_o = prov_mapper.map_formalized_question_to_prov_o(formalized_question)
+    print(f"Mapped to PROV-O: {mapped_to_prov_o}")
+
+    response_object = {
+        "original_question": question,
+        "tokens": [(token.text, token.dep_, token.pos_, token.head.text) for token in doc],
+        "patterns": patterns,
+        "rewritten_question": rewritten_question,
+        "formalized_question": formalized_question,
+        "mapped_to_prov_o": mapped_to_prov_o
+    }
+
+    return response_object
 
 if __name__ == "__main__":
     with open("sample/pq.txt", "r") as file:
         sample_questions = file.read()
-    print(handle_questions(sample_questions))
+
+    for question in handle_questions(sample_questions):
+        print(question)
