@@ -1,5 +1,6 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 import question_handler
+import json
 
 application = Flask(__name__)
 
@@ -9,7 +10,11 @@ def pq_analyzer():
 
     if uploaded_file and uploaded_file.filename.endswith(".txt"):
         content = uploaded_file.read().decode("utf-8")
-        return question_handler.handle_questions(content), 200
+        result = question_handler.handle_questions(content)
+
+        json_response = json.dumps(result, ensure_ascii=False, sort_keys=False)
+
+        return Response(json_response, status=200, mimetype='application/json')
     
     return "Invalid file", 400
 

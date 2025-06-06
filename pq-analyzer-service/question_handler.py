@@ -32,7 +32,7 @@ def handle_question(question):
     formalized_question = question_formalizer.formalize_question(rewritten_question)
     print(f"Formalized question: {formalized_question}")
 
-    mapped_to_prov_o = prov_mapper.map_formalized_question_to_prov_o(formalized_question)
+    target_concept, mapped_to_prov_o = prov_mapper.map_formalized_question_to_prov_o(formalized_question)
     print(f"Mapped to PROV-O: {mapped_to_prov_o}")
 
     response_object = {
@@ -41,6 +41,7 @@ def handle_question(question):
         "patterns": patterns,
         "rewritten_question": rewritten_question,
         "formalized_question": formalized_question,
+        "target_concept": target_concept,
         "mapped_to_prov_o": mapped_to_prov_o
     }
 

@@ -2,7 +2,7 @@ services:
   unification-generation-service:
     build: ./unification-generation-service
     ports:
-      - "5503:5503"
+      - "5504:5504"
 
   ai-system-analyzer-service:
     build: ./ai-system-analyzer-service
@@ -28,7 +28,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "5504:80"
+      - "5503:80"
     depends_on:
       - director-managing-service
     environment:

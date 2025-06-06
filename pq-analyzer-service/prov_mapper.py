@@ -5,20 +5,38 @@ def map_formalized_question_to_prov_o(question):
 
     input_type = get_input_type(is_prov_agent(question[2]), is_prov_activity(question[2]), is_prov_entity(question[2]))
 
-    target_concept = None
+    print(input_type)
+    target_concept = []
     for concept in potential_matching_concepts:
-        if concept[4] == input_type:
-            target_concept = concept
-            break
+        if concept[4] == input_type or concept[4] == "variable":
+            target_concept.append(concept)
+
+    if len(target_concept) == 0:
+        target_concept = None
+    elif len(target_concept) == 1:
+        target_concept = target_concept[0]
+    else:
+        target_concept = select_concept_on_association(target_concept, question)
+
 
     print(f"Target concept: {target_concept}")
+    if target_concept is None:
+        print("No matching concept found for the question.")
+        return None, None
 
-    return question
+    mapped_question = {
+        question[0]: target_concept[6],
+        question[1]: target_concept[5],
+        question[2]: target_concept[4],
+    }
+
+    return target_concept, mapped_question
 
 def is_prov_agent(item):
     return False
 
 def is_prov_activity(item):
+    # TODO: Add maximum character deviation
     for term in activity_terms:
         if term in item.lower():
             return True
@@ -26,6 +44,7 @@ def is_prov_activity(item):
     return False
 
 def is_prov_entity(item):
+    ## TODO: Add maximum character deviation
     for term in entity_terms:
         if term in item.lower():
             return True
@@ -50,20 +69,30 @@ def get_concept_match_for_question_word(qword):
 
     return matching_concepts
 
-# ID, Category, Question Word, Relation Pattern, Input Type, Output Type
+def select_concept_on_association(possible_concepts, question):
+    # Check if question[1] and concepts[4] match through the association dictionary
+    for concept in possible_concepts:
+        if question[1] in associations.get(concept[3], []):
+            return concept
+
+    # If no match found, return the first concept as a fallback
+    return possible_concepts[0] if possible_concepts else None
+
+# ID, Category, Question Word, Target Verb, Relation Pattern, Input Type, Middle Type, Output Type
 concepts = [
-    (0, "accountability", "who", "wasAttributedTo", "prov:Entity", "prov:Agent"),
-    (1, "accountability", "who", "wasAssociatedWith", "prov:Activity", "prov:Agent"),
+    (0, "accountability", "who" ,"wasAttributedTo", "prov:Entity", "prov:Activity" , "prov:Agent"),
+    (1, "accountability", "who",  "wasAssociatedWith", "prov:Activity", "prov:Activity", "prov:Agent"),
     #(2, "accountability", "which", "actedOnBehalfOf", "prov:Agent", "prov:Agent"),
-    (3, "temporal provenance", "when", "startedAtTime", "prov:Activity", "timestamp"),
-    (4, "temporal provenance", "when", "endedAtTime", "prov:Activity", "timestamp"),
-    (5, "temporal provenance", "when", "generatedAtTime", "prov:Entity", "timestamp"),
-    (6, "usage", "what", "entityUsed", "prov:Activity", "prov:Entity"),
-    (7, "generation", "what", "activityGenerated", "prov:Entity", "prov:Activity"),
-    (8, "location", "where", "atLocation", "prov:Entity", "location"),
+    (3, "temporal provenance", "when","startedAtTime", "prov:Activity", "specification", "timestamp"),
+    (4, "temporal provenance", "when", "endedAtTime", "prov:Activity", "specification" ,"timestamp"),
+    (5, "temporal provenance", "when", "generatedAtTime", "prov:Entity", "specification" , "timestamp"),
+    (6, "usage", "what", "entityUsed", "prov:Activity", "prov:Activity" , "prov:Entity"),
+    (7, "generation", "what", "activityGenerated", "prov:Entity", "prov:Activity" ,"prov:Activity"),
+    (8, "location", "where", "atLocation", "prov:Entity", "specification" ,"location"),
     #(9, "derivation", "which", "wasDerivedFrom", "prov:Entity", "prov:Entity"),
     #(10, "global provenance", "what", "selectAllActivities", None, "prov:Activity"),
-    (11, "aggregation", "how often", "occurrenceCount", "prov:Entity", "number"),
+    (11, "aggregation", "how often","occurrenceCount", "prov:Entity", None ,"number"),
+    (12, "selection", "what", "selectionOfEntity", "prov:Entity", None, "prov:Entity"),
 ]
 
 associations = {
@@ -75,6 +104,8 @@ associations = {
     "entityUsed" : [ "used" ],
     "activityGenerated" : [ "generated" ],
     "atLocation" : [ "located" ],
+    "occurrenceCount" : [ "occurred", "happened" ],
+    "selectionOfEntity": [ "is", "be"],
 }
 
 activity_terms = [
@@ -99,5 +130,6 @@ entity_terms = [
     "artifact",
     "object",
     "license",
-    "guideline"
+    "guideline",
+    "source code"
 ]
