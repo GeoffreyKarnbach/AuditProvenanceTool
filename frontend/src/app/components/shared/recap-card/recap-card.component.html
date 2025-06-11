@@ -1,12 +1,50 @@
 <div class="card shadow-sm">
   <div class="card-body">
     <h5 class="card-title text-center"><u>Recap</u></h5>
-    <br />
-    <div class="alert alert-info d-flex align-items-center gap-2" role="alert">
+
+    <div
+      class="alert alert-info d-flex align-items-center gap-2 mt-3"
+      role="alert"
+    >
       <i class="bi bi-lightbulb-fill fs-5"></i>
       <div>
-        Please review the selected activities and entities before submitting.
+        Please review your selected activities and entities before submitting.
       </div>
     </div>
+
+    <div class="recap-list mt-4">
+      <div
+        class="recap-item border rounded p-3 mb-3"
+        *ngFor="let selection of selections"
+      >
+        <h6 class="fw-bold text-secondary mb-2">
+          <i class="bi bi-question-circle me-1"></i> {{ selection.question }}
+        </h6>
+        <div class="ms-3">
+          <p class="mb-1">
+            <i class="bi bi-gear-fill text-success me-1"></i>
+            <strong>Activity:</strong>
+            <span class="text-dark">{{
+              selection.selectedActivityId || "—"
+            }}</span>
+          </p>
+          <p class="mb-0">
+            <i class="bi bi-diagram-3-fill text-info me-1"></i>
+            <strong>Entity:</strong>
+            <span class="text-dark">{{
+              selection.selectedEntityId || "—"
+            }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <button
+      *ngIf="allSelected"
+      class="btn btn-primary w-100 mt-3"
+      (click)="submitSelections()"
+    >
+      <i class="bi bi-check-circle-fill"></i> Submit Selections
+    </button>
   </div>
 </div>

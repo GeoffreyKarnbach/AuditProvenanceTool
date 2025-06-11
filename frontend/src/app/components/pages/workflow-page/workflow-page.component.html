@@ -1,120 +1,130 @@
 <div class="container mt-5">
-  <div class="alert alert-info mt-4" role="alert">
+  <div class="alert alert-info" role="alert">
     <h5 class="alert-heading">📄 What Are These Files?</h5>
     <p>
       To analyze your AI system and its provenance, please upload the following
-      two files:
+      files:
     </p>
     <ul>
       <li>
         <strong>TTL File (.ttl)</strong><br />
-        This file contains a structured <em>workflow description</em> of your AI
-        system, written in the
-        <a
-          href="https://www.w3.org/TR/turtle/"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Turtle (TTL)</a
-        >
-        RDF format. It defines the components, processes, and their
-        relationships within the AI pipeline.
+        Describes your AI workflow in
+        <a href="https://www.w3.org/TR/turtle/" target="_blank">Turtle (TTL)</a>
+        format.
       </li>
       <li class="mt-2">
         <strong>TXT File (.txt)</strong><br />
-        This file includes a list of <em>provenance-related questions</em> you
-        want to ask about the AI workflow. Each line typically represents a
-        single question related to system behavior, data lineage, or
-        decision-making.
+        Contains your provenance-related questions — one per line.
       </li>
     </ul>
     <p class="mb-0">
-      By uploading both files, our system can link your questions to specific
-      workflow components for analysis and reasoning.
+      These inputs allow our system to trace, map, and generate provenance
+      queries for your AI system.
     </p>
   </div>
 
-  <p *ngIf="processId">Current process ID: {{ processId }}</p>
+  <p *ngIf="processId" class="text-muted">
+    Current process ID: <code>{{ processId }}</code>
+  </p>
 
-  <div class="row">
-    <div class="mb-4 position-relative">
-      <div
-        *ngIf="ttlServerProcessing"
-        class="position-absolute w-100 h-100 top-0 start-0 d-flex justify-content-center align-items-center"
-        style="background: rgba(220, 220, 220, 0.7); z-index: 10"
-      >
-        <div
-          class="spinner-border text-primary"
-          role="status"
-          style="width: 3rem; height: 3rem"
-        >
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      <div
-        class="drop-zone p-4 text-center border rounded"
-        [class.drag-over]="dragOverTtl"
-        (drop)="
-          !ttlServerProcessing && !ttlProcessed && onFileDrop($event, 'ttl')
-        "
-        (dragover)="
-          !ttlServerProcessing && !ttlProcessed && onDragOver($event, 'ttl')
-        "
-        (dragleave)="
-          !ttlServerProcessing && !ttlProcessed && onDragLeave('ttl')
-        "
-      >
-        <div *ngIf="!ttlProcessed">
-          <p class="mb-2"><strong>Drop your .ttl file here</strong></p>
-          <p *ngIf="ttlFile" class="text-success">✔ {{ ttlFile.name }}</p>
-          <p *ngIf="!ttlFile" class="text-muted">Only .ttl files accepted</p>
-        </div>
-        <div *ngIf="ttlProcessed">
-          <p class="mb-2"><strong>TTL File Processed</strong></p>
-          <span><i class="bi bi-check-circle-fill text-success"></i></span>
-        </div>
-      </div>
-    </div>
-    <div class="mb-4 position-relative">
-      <div
-        *ngIf="txtServerProcessing"
-        class="position-absolute w-100 h-100 top-0 start-0 d-flex justify-content-center align-items-center"
-        style="background: rgba(220, 220, 220, 0.7); z-index: 10"
-      >
-        <div
-          class="spinner-border text-primary"
-          role="status"
-          style="width: 3rem; height: 3rem"
-        >
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      <div
-        class="drop-zone p-4 text-center border rounded"
-        [class.drag-over]="dragOverTxt"
-        (drop)="
-          !txtServerProcessing && !ttlProcessed && onFileDrop($event, 'txt')
-        "
-        (dragover)="
-          !txtServerProcessing && !ttlProcessed && onDragOver($event, 'txt')
-        "
-        (dragleave)="
-          !txtServerProcessing && !ttlProcessed && onDragLeave('txt')
-        "
-      >
-        <div *ngIf="txtProcessed">
-          <p class="mb-2"><strong>TXT File Processed</strong></p>
-          <span><i class="bi bi-check-circle-fill text-success"></i></span>
-        </div>
-        <div *ngIf="!txtProcessed">
-          <p class="mb-2"><strong>Drop your .txt file here</strong></p>
-          <p *ngIf="txtFile" class="text-success">✔ {{ txtFile.name }}</p>
-          <p *ngIf="!txtFile" class="text-muted">Only .txt files accepted</p>
+  <div class="row g-4">
+    <!-- TTL Upload Card -->
+    <div class="col-md-6">
+      <div class="card shadow-sm position-relative">
+        <div class="card-body text-center">
+          <h5 class="card-title">Upload TTL File</h5>
+          <p class="card-text text-muted">Drag & drop your .ttl file here</p>
+          <div
+            class="drop-zone border rounded p-4"
+            [class.drag-over]="dragOverTtl"
+            (drop)="
+              !ttlServerProcessing && !ttlProcessed && onFileDrop($event, 'ttl')
+            "
+            (dragover)="
+              !ttlServerProcessing && !ttlProcessed && onDragOver($event, 'ttl')
+            "
+            (dragleave)="
+              !ttlServerProcessing && !ttlProcessed && onDragLeave('ttl')
+            "
+          >
+            <ng-container *ngIf="!ttlProcessed">
+              <p *ngIf="ttlFile" class="text-success">✔ {{ ttlFile.name }}</p>
+              <p *ngIf="!ttlFile" class="text-muted">
+                Only .ttl files accepted
+              </p>
+            </ng-container>
+            <ng-container *ngIf="ttlProcessed">
+              <p class="text-success fw-semibold">TTL File Processed</p>
+              <i class="bi bi-check-circle-fill fs-3 text-success"></i>
+            </ng-container>
+          </div>
+          <div
+            *ngIf="ttlServerProcessing"
+            class="overlay d-flex justify-content-center align-items-center"
+          >
+            <div
+              class="spinner-border text-primary"
+              role="status"
+              style="width: 2.5rem; height: 2.5rem"
+            >
+              <span class="visually-hidden">Processing...</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- TXT Upload Card -->
+    <div class="col-md-6">
+      <div class="card shadow-sm position-relative">
+        <div class="card-body text-center">
+          <h5 class="card-title">Upload TXT File</h5>
+          <p class="card-text text-muted">Drag & drop your .txt file here</p>
+          <div
+            class="drop-zone border rounded p-4"
+            [class.drag-over]="dragOverTxt"
+            (drop)="
+              !txtServerProcessing && !txtProcessed && onFileDrop($event, 'txt')
+            "
+            (dragover)="
+              !txtServerProcessing && !txtProcessed && onDragOver($event, 'txt')
+            "
+            (dragleave)="
+              !txtServerProcessing && !txtProcessed && onDragLeave('txt')
+            "
+          >
+            <ng-container *ngIf="!txtProcessed">
+              <p *ngIf="txtFile" class="text-success">✔ {{ txtFile.name }}</p>
+              <p *ngIf="!txtFile" class="text-muted">
+                Only .txt files accepted
+              </p>
+            </ng-container>
+            <ng-container *ngIf="txtProcessed">
+              <p class="text-success fw-semibold">TXT File Processed</p>
+              <i class="bi bi-check-circle-fill fs-3 text-success"></i>
+            </ng-container>
+          </div>
+          <div
+            *ngIf="txtServerProcessing"
+            class="overlay d-flex justify-content-center align-items-center"
+          >
+            <div
+              class="spinner-border text-primary"
+              role="status"
+              style="width: 2.5rem; height: 2.5rem"
+            >
+              <span class="visually-hidden">Processing...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="text-center mt-4">
     <button
-      class="btn btn-primary mt-3 d-block mx-auto"
+      class="btn btn-outline-primary px-4"
       [disabled]="!ttlFile || !txtFile"
       (click)="onSubmit()"
       *ngIf="
@@ -128,7 +138,7 @@
     </button>
 
     <button
-      class="btn btn-primary mt-3 d-block mx-auto"
+      class="btn btn-primary px-4"
       (click)="goToUnification()"
       *ngIf="txtProcessed && ttlProcessed"
     >

@@ -12,7 +12,7 @@ import * as devMock from 'src/assets/devMock.json';
 export class UnificationPageComponent {
   processId!: string;
 
-  mode: string = 'DEV';
+  mode: string = 'PROD'; // "DEV"
 
   unificationFirstStepComplete: boolean = false;
   unificationFirstStepResponse: UnificationClarificationResponseDto | undefined;
@@ -59,6 +59,7 @@ export class UnificationPageComponent {
                             response
                           );
                           this.unificationFirstStepComplete = true;
+                          this.unificationFirstStepResponse = response;
                         },
                         error: (error) => {
                           console.error(

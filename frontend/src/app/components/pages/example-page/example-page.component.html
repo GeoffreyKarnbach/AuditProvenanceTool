@@ -1,5 +1,57 @@
-<h1>HELLO</h1>
+<div class="container py-5 text-center">
+  <h1 class="display-4 fw-bold mb-3 text-primary">
+    Welcome to the Provenance Question Analyzer
+  </h1>
+  <p class="lead text-muted mb-5">
+    Input your AI system's metadata and ask provenance-related questions. We'll
+    handle the rest — intelligently and transparently.
+  </p>
 
-<button>
-  <a routerLink="/workflow">Try out the workflow</a>
-</button>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <i class="bi bi-upload fs-1 text-primary mb-3"></i>
+          <h5 class="card-title">Upload Your Data</h5>
+          <p class="card-text">
+            Provide a <strong>TTL file</strong> describing your AI system and a
+            <strong>TXT file</strong> with your provenance questions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <i class="bi bi-gear-fill fs-1 text-success mb-3"></i>
+          <h5 class="card-title">Analyze & Unify</h5>
+          <p class="card-text">
+            Our engine analyzes each question, unifies terminology, and matches
+            tokens to <strong>PROV-O</strong> concepts like entities and
+            activities.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <i class="bi bi-graph-up-arrow fs-1 text-danger mb-3"></i>
+          <h5 class="card-title">Generate Answers</h5>
+          <p class="card-text">
+            We build trace templates and generate tailored
+            <strong>SPARQL queries</strong> to answer each provenance question.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <a routerLink="/workflow" class="btn btn-lg btn-primary px-4 py-2">
+      <i class="bi bi-play-circle me-2"></i>Try Out the Workflow
+    </a>
+  </div>
+</div>

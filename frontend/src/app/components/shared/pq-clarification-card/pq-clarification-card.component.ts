@@ -61,7 +61,6 @@ export class PqClarificationCardComponent {
 
     if (activityObj?.entities.length !== 0) {
       this.availableEntities = activityObj?.entities || [];
-      this.selectedEntityId = this.availableEntities[0] || null;
     } else {
       this.defaultEntitiesSuggested = true;
       this.availableEntities =

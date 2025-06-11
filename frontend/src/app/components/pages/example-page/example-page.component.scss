@@ -1,0 +1,13 @@
+h1,
+h5 {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  transition: transform 0.2s ease;
+}
+
+.btn-primary {
+  font-weight: 600;
+}

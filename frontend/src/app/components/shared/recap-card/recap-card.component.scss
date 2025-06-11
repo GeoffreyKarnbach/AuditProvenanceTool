@@ -1,9 +1,18 @@
-.card {
-  border-radius: 1rem;
-  transition: transform 0.3s ease;
-  background-color: #ffffff;
+.recap-list {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
 
-  &:hover {
-    transform: scale(1.02);
+  .recap-item {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #eef3f7;
+    }
+  }
+
+  p {
+    font-size: 0.95rem;
   }
 }

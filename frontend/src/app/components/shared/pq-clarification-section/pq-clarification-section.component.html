@@ -12,24 +12,27 @@
     </button>
 
     <div class="carousel-track">
-      <div
-        class="carousel-slide"
-        [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+      <ng-container
+        *ngFor="
+          let mapping of clarificationRequests.mappingSuggestions;
+          let i = index
+        "
       >
-        <div
-          class="carousel-card"
-          *ngFor="let mapping of clarificationRequests.mappingSuggestions"
-        >
+        <div class="carousel-card" *ngIf="currentIndex === i">
           <app-pq-clarification-card
             [possibleActivities]="clarificationRequests.options"
             [mapping]="mapping"
             [selections]="selections"
           ></app-pq-clarification-card>
         </div>
+      </ng-container>
 
-        <div class="carousel-card">
-          <app-recap-card [selections]="selections"></app-recap-card>
-        </div>
+      <!-- Recap card as last slide -->
+      <div
+        class="carousel-card"
+        *ngIf="currentIndex === clarificationRequests.mappingSuggestions.length"
+      >
+        <app-recap-card [selections]="selections"></app-recap-card>
       </div>
     </div>
 
