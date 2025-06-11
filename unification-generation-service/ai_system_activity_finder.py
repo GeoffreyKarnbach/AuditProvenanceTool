@@ -2,7 +2,6 @@ from rapidfuzz import fuzz
 
 def find_matching_activity(ai_system_data, keyword):
     matching_activities = []
-    print(keyword)
 
     # First we look for subtypes that match the keyword and collect activities for those subtypes
     matching_subtypes = []
@@ -12,8 +11,6 @@ def find_matching_activity(ai_system_data, keyword):
                 for act in activities
         ):
             matching_subtypes.append(subtype)
-
-    print(matching_subtypes)
 
     for subtype in matching_subtypes:
         activities = get_all_activities_with_subtype(ai_system_data, subtype)
@@ -48,7 +45,8 @@ def get_all_activities_with_keyword(ai_system_data, keyword, threshold=90):
 
 keyword_to_activity_subtype = {
     "ns#Generation": [
-        "generate"
+        "generate",
+        "produce"
     ],
     "ns#Transformation": [
         "transform",
@@ -61,7 +59,8 @@ keyword_to_activity_subtype = {
         "classify",
         "detect",
         "identify",
-        "run"
+        "run",
+        "produce"
     ],
     "ns#Training": [
         "train",

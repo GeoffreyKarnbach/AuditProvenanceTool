@@ -1,6 +1,7 @@
 package project.backend.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import project.backend.dto.UnificationClarificationManagingRequestDTO;
 
 import java.io.IOException;
 
@@ -12,5 +13,9 @@ public interface WorkflowService {
 
     Boolean txtAnalyzeComplete(String processId);
 
-    void triggerUnificationWorkflow(String processId);
+    Boolean unificationFirstStepComplete(String processId);
+
+    Boolean triggerUnificationWorkflow(String processId);
+
+    UnificationClarificationManagingRequestDTO getUnificationFirstStepResponse(String processId);
 }

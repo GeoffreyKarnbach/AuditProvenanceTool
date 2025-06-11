@@ -1,0 +1,106 @@
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title text-center"><u>Provenance Question</u></h5>
+    <p class="card-text">{{ mapping.question }}</p>
+
+    <ng-container *ngIf="!mapping.mapping">
+      <div
+        class="alert alert-warning d-flex align-items-center gap-2"
+        role="alert"
+      >
+        <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+        <div>
+          <strong> No suggestions available </strong>based on our analyzation.
+          Please select from all available activities and their entities.
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="mapping.mapping">
+      <div
+        class="alert alert-info d-flex align-items-center gap-2"
+        role="alert"
+      >
+        <i class="bi bi-lightbulb-fill fs-5"></i>
+        <div>
+          <strong>Suggestions pre-selected </strong>by the system based on the
+          analysis of the data.
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="mb-3">
+      <label for="activitySelect" class="form-label">Select Activity</label>
+      <div class="d-flex align-items-center gap-2">
+        <select
+          id="activitySelect"
+          class="form-select"
+          [(ngModel)]="selectedActivityId"
+          (change)="onActivityChange()"
+        >
+          <option
+            *ngFor="let activity of availableActivities"
+            [value]="activity.activity"
+          >
+            {{ activity.activity }}
+          </option>
+        </select>
+        <button
+          *ngIf="selectedActivityId"
+          class="btn btn-danger"
+          (click)="resetActivitySelection()"
+        >
+          <i class="bi-x-octagon"></i>
+        </button>
+      </div>
+    </div>
+
+    <button
+      *ngIf="!selectedActivityId && mapping.mapping?.mappings?.length"
+      class="btn btn-secondary mb-3 d-block mx-auto"
+      (click)="onOverrideSuggestion()"
+    >
+      <i class="bi-x-octagon"></i>
+      {{
+        suggestionOverride
+          ? "Reset to suggested activity"
+          : "No suggested activity matching, override suggestion."
+      }}
+    </button>
+
+    <ng-container *ngIf="defaultEntitiesSuggested">
+      <div
+        class="alert alert-warning d-flex align-items-center gap-2"
+        role="alert"
+      >
+        <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+        <div>
+          <strong> No suggestions available </strong>based on our analyzation.
+          Please select from all available entities for the selected activity.
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="availableEntities.length > 0" class="mb-2">
+      <label for="entitySelect" class="form-label">Select Entity</label>
+      <select
+        id="entitySelect"
+        class="form-select"
+        [(ngModel)]="selectedEntityId"
+        (change)="onEntityChange()"
+      >
+        <option *ngFor="let entity of availableEntities" [value]="entity">
+          {{ entity }}
+        </option>
+      </select>
+    </div>
+
+    <p
+      *ngIf="selectedActivityId && availableEntities.length === 0"
+      class="text-muted small"
+    >
+      No entities associated with this activity. You may proceed with this
+      selection.
+    </p>
+  </div>
+</div>

@@ -4,11 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import project.backend.dto.PQAnalyzerResponseItemDTO;
+import project.backend.dto.UnificationClarificationManagingRequestDTO;
+import project.backend.dto.UnificationClarificationResponseDTO;
 import project.backend.service.DelegationService;
 import project.backend.service.WorkflowService;
+import project.backend.workflowmapping.Workflow;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -16,8 +21,9 @@ import java.util.HashMap;
 public class WorkflowServiceImpl implements WorkflowService {
 
     private final DelegationService delegationService;
-    private final HashMap<String, String> processIdAiSystemAnalyzerResponse = new HashMap<>();
-    private final HashMap<String, String> processIdPQAnalyzerResponse = new HashMap<>();
+    private final HashMap<String, Workflow> processIdAiSystemAnalyzerResponse = new HashMap<>();
+    private final HashMap<String, List<PQAnalyzerResponseItemDTO>> processIdPQAnalyzerResponse = new HashMap<>();
+    private final HashMap<String, UnificationClarificationResponseDTO> processUnificationFirstStepResponse = new HashMap<>();
 
     @Override
     public String initiateWorkflow(MultipartFile ttlFile, MultipartFile txtFile) throws IOException {
@@ -64,16 +70,47 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     @Override
-    public void triggerUnificationWorkflow(String processId) {
+    public Boolean unificationFirstStepComplete(String processId) {
+        return processUnificationFirstStepResponse.containsKey(processId);
+    }
+
+    @Override
+    public Boolean triggerUnificationWorkflow(String processId) {
         log.info("Triggering unification workflow for process ID: {}", processId);
-        String aiSystemAnalyzerResponse = processIdAiSystemAnalyzerResponse.get(processId);
-        String pqAnalyzerResponse = processIdPQAnalyzerResponse.get(processId);
+        Workflow aiSystemAnalyzerResponse = processIdAiSystemAnalyzerResponse.get(processId);
+        List<PQAnalyzerResponseItemDTO> pqAnalyzerResponse = processIdPQAnalyzerResponse.get(processId);
 
         if (aiSystemAnalyzerResponse != null && pqAnalyzerResponse != null) {
-            log.info("Unification workflow triggered with responses: AI System Analyzer - {}, PQ Analyzer - {}",
-                aiSystemAnalyzerResponse, pqAnalyzerResponse);
+            this.delegationService.sendFilesToUnificationFirstStep(aiSystemAnalyzerResponse, pqAnalyzerResponse)
+                .thenAccept(response -> {
+                    log.info("Unification first step response: {}", response);
+                    processUnificationFirstStepResponse.put(processId, response);
+                })
+                .exceptionally(e -> {
+                    log.error("Error triggering unification workflow", e);
+                    return null;
+                });
+            return true;
         } else {
             log.warn("Unification workflow cannot be triggered. Missing responses for process ID: {}", processId);
+            return false;
         }
+    }
+
+    @Override
+    public UnificationClarificationManagingRequestDTO getUnificationFirstStepResponse(String processId) {
+
+        Workflow aiSystemAnalyzerResponse = processIdAiSystemAnalyzerResponse.get(processId);
+        UnificationClarificationResponseDTO response = processUnificationFirstStepResponse.get(processId);
+
+        if (aiSystemAnalyzerResponse == null || response == null) {
+            log.warn("No unification first step response found for process ID: {}", processId);
+            return null;
+        }
+
+        return UnificationClarificationManagingRequestDTO.builder()
+            .unificationClarificationResponse(response)
+            .workflow(aiSystemAnalyzerResponse)
+            .build();
     }
 }

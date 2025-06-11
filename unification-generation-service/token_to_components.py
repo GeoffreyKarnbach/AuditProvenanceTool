@@ -10,7 +10,6 @@ def select_correct_handler(concept, pq, ai_system_data):
 
 def handle_accoutability_wasAttributedTo(pq, ai_system_data):
     print("Concept: accountability_wasAttributedTo")
-    print(pq["original_question"])
 
     pq_prov_mapped = list(pq["mapped_to_prov_o"].items())
     if pq_prov_mapped is None:
@@ -26,13 +25,23 @@ def handle_accoutability_wasAttributedTo(pq, ai_system_data):
     # Now we target entities for the third element
     entity_word, entity_type = pq_prov_mapped[2]
 
+    result_set = []
+
     for activity_id in matching_activity_id:
         matching_entities = ai_system_entity_finder.find_matching_entity_for_activity(
             ai_system_data, activity_id, entity_word
         )
-        print("Matching entities for activity:", activity_id, "->", matching_entities)
 
-    return None
+        result_set.append({
+            "activity": activity_id,
+            "entities": matching_entities
+        })
+
+    return {
+        "firstTerm": activity_word,
+        "secondTerm": entity_word,
+        "mappings": result_set
+    }
 
 def handle_accoutability_wasAssociatedWith(pq, ai_system_data):
     print("Concept: accountability_wasAssociatedWith")

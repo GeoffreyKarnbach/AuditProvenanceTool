@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Globals } from 'src/app/global';
 import { Observable } from 'rxjs';
+import {
+  UnificationClarificationDto,
+  UnificationClarificationResponseDto,
+} from '../dtos/unification-clarification-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +35,27 @@ export class BackendService {
   txtAnalyzeComplete(processId: string): Observable<boolean> {
     return this.httpClient.get<any>(
       `${this.workflowUri}/txt-analyze-complete/${processId}`
+    );
+  }
+
+  unificationFirstStepComplete(processId: string): Observable<boolean> {
+    return this.httpClient.get<any>(
+      `${this.workflowUri}/unification-first-step-complete/${processId}`
+    );
+  }
+
+  triggerUnificationWorkflow(processId: string): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${this.workflowUri}/trigger-unification-workflow/${processId}`,
+      {}
+    );
+  }
+
+  getUnificationFirstStepResponse(
+    processId: string
+  ): Observable<UnificationClarificationResponseDto> {
+    return this.httpClient.get<UnificationClarificationResponseDto>(
+      `${this.workflowUri}/unification-first-step-response/${processId}`
     );
   }
 }

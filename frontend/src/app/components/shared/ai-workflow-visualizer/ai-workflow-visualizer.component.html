@@ -1,0 +1,64 @@
+<h3 class="text-center mb-4">
+  <i class="bi bi-diagram-3-fill"></i> AI Workflow Visualizer
+</h3>
+<div class="workflow-container container-fluid py-3">
+  <div class="row flex-nowrap overflow-auto">
+    <div
+      *ngFor="let step of workflow.workflowSteps"
+      class="col-12 col-sm-4 col-md-4 col-lg-4 d-flex flex-column align-items-stretch mb-3"
+    >
+      <div class="card workflow-step h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">{{ step.stepName }}</h5>
+          <small class="text-light">Step #{{ step.stepNumber }}</small>
+          <span class="badge bg-info ms-2">{{ step.id }}</span>
+        </div>
+        <div class="card-body">
+          <p class="card-subtitle mb-2 text-muted">
+            Type: <span class="badge bg-secondary">{{ step.stepSubtype }}</span>
+          </p>
+
+          <div *ngIf="step.workflowAgents?.length">
+            <strong>Agents:</strong>
+            <ul class="list-unstyled mb-2 small">
+              <li *ngFor="let agent of step.workflowAgents">
+                <i class="bi bi-person-fill"></i
+                ><span class="badge bg-secondary">{{ agent.id }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="step.workflowInputVariables?.length">
+            <strong>Input variables:</strong>
+            <ul class="list-unstyled small">
+              <li *ngFor="let input of step.workflowInputVariables">
+                <i class="bi bi-box-arrow-in-down"></i>
+                <span class="badge bg-secondary">{{ input.id }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="step.workflowOutputVariables?.length">
+            <strong>Output variables:</strong>
+            <ul class="list-unstyled small">
+              <li *ngFor="let output of step.workflowOutputVariables">
+                <i class="bi bi-box-arrow-up"></i>
+                <span class="badge bg-secondary">{{ output.id }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-footer text-muted small">
+          Prev:
+          <span class="badge bg-secondary">{{
+            step.previousStepId || "—"
+          }}</span>
+          <br />
+          <br />
+          Next:
+          <span class="badge bg-secondary">{{ step.nextStepId || "—" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

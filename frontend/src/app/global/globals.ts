@@ -5,5 +5,5 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class Globals {
-  readonly backendUri: string = environment.backendUri;
+  readonly backendUri: string = environment.directorManagingServiceUri;
 }

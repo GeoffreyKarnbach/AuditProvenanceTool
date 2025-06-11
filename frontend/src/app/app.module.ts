@@ -19,6 +19,10 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkflowPageComponent } from './components/pages/workflow-page/workflow-page.component';
 import { UnificationPageComponent } from './components/pages/unification-page/unification-page.component';
+import { AiWorkflowVisualizerComponent } from './components/shared/ai-workflow-visualizer/ai-workflow-visualizer.component';
+import { PqClarificationCardComponent } from './components/shared/pq-clarification-card/pq-clarification-card.component';
+import { PqClarificationSectionComponent } from './components/shared/pq-clarification-section/pq-clarification-section.component';
+import { RecapCardComponent } from './components/shared/recap-card/recap-card.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +36,10 @@ import { UnificationPageComponent } from './components/pages/unification-page/un
     FooterComponent,
     WorkflowPageComponent,
     UnificationPageComponent,
+    AiWorkflowVisualizerComponent,
+    PqClarificationCardComponent,
+    PqClarificationSectionComponent,
+    RecapCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +49,7 @@ import { UnificationPageComponent } from './components/pages/unification-page/un
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
