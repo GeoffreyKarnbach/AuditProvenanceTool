@@ -6,6 +6,7 @@ import {
   UnificationClarificationDto,
   UnificationClarificationResponseDto,
 } from '../dtos/unification-clarification-dto';
+import { UnificationClarificationFrontendResponseDto } from '../dtos/unification-clarification-selection-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -56,6 +57,16 @@ export class BackendService {
   ): Observable<UnificationClarificationResponseDto> {
     return this.httpClient.get<UnificationClarificationResponseDto>(
       `${this.workflowUri}/unification-first-step-response/${processId}`
+    );
+  }
+
+  triggerUnificationSecondStep(
+    processId: string,
+    response: UnificationClarificationFrontendResponseDto
+  ): Observable<boolean> {
+    return this.httpClient.post<boolean>(
+      `${this.workflowUri}/trigger-unification-second-step/${processId}`,
+      response
     );
   }
 }

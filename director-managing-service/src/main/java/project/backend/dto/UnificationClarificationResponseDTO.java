@@ -1,5 +1,6 @@
 package project.backend.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UnificationClarificationResponseDTO {
     private List<PossibleActivityDto> options;
     private List<MappingItemDto> mappingSuggestions;
+    private String requestId;
 }
 
 @Data
@@ -42,5 +44,5 @@ class MappingSuggestionDto {
 @AllArgsConstructor
 class PossibleActivityDto {
     private String activity;
-    private List<String> entities;
+    private List<List<String>> entities;
 }

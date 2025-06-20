@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import project.backend.dto.UnificationClarificationFrontendResponseDTO;
 import project.backend.dto.UnificationClarificationManagingRequestDTO;
 import project.backend.service.WorkflowService;
 
@@ -67,5 +68,13 @@ public class WorkflowEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unification first step response not found for process ID: " + processId);
         }
         return response;
+    }
+
+
+    @PostMapping(value="/trigger-unification-second-step/{processId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean triggerSecondStepUnificationWorkflow(@PathVariable String processId, @RequestBody UnificationClarificationFrontendResponseDTO unificationClarificationFrontendResponse) {
+        log.info("POST /api/v1/workflow/trigger-unification-second-step/{}", processId);
+        log.info("Received unification clarification response: {}", unificationClarificationFrontendResponse);
+        return false;
     }
 }

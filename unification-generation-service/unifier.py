@@ -2,7 +2,7 @@ import json
 import token_to_components
 import ai_system_extractor
 
-def unify_ai_system_with_pqs(ai_system_data, pq_data):
+def unify_ai_system_with_pqs(ai_system_data, pq_data, request_id):
 
     """
     - Map concepts to concrete instances of the AI system (Activity to Step, Search for entity in target Activity)
@@ -23,6 +23,7 @@ def unify_ai_system_with_pqs(ai_system_data, pq_data):
     response = {
         "options": ai_system_extractor.get_possible_activities_with_entities(ai_system_data),
         "mappingSuggestions": mapping,
+        "requestId": request_id
     }
 
     return response
@@ -47,5 +48,5 @@ if __name__ == "__main__":
     with open("sample/pq_analyzer_response.json", "r") as file:
         pq_data_input = json.load(file)
 
-    unified_result = unify_ai_system_with_pqs(ai_system_input, pq_data_input)
+    unified_result = unify_ai_system_with_pqs(ai_system_input, pq_data_input, "test_request_id")
     print(unified_result)

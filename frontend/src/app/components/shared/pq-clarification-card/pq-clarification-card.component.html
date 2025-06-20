@@ -29,6 +29,9 @@
       </div>
     </ng-container>
 
+    <p class="card-text" *ngIf="mapping.mapping?.firstTerm">
+      Term: <strong>{{ mapping.mapping?.firstTerm }}</strong>
+    </p>
     <div class="mb-3">
       <label for="activitySelect" class="form-label">Select Activity</label>
       <div class="d-flex align-items-center gap-2">
@@ -82,17 +85,51 @@
     </ng-container>
 
     <div *ngIf="availableEntities.length > 0" class="mb-2">
+      <p class="card-text" *ngIf="mapping.mapping?.secondTerm">
+        Term: <strong>{{ mapping.mapping?.secondTerm }}</strong>
+      </p>
       <label for="entitySelect" class="form-label">Select Entity</label>
       <select
         id="entitySelect"
         class="form-select"
         [(ngModel)]="selectedEntityId"
-        (change)="onEntityChange()"
+        (change)="onEntitySelect(selectedEntityId!)"
       >
         <option *ngFor="let entity of availableEntities" [value]="entity">
           {{ entity }}
         </option>
       </select>
+    </div>
+
+    <ng-container *ngIf="selectedEntityId">
+      <div
+        class="alert alert-info d-flex align-items-center gap-2 mt-4"
+        role="alert"
+      >
+        <i class="bi bi-lightbulb-fill fs-5"></i>
+        <div>
+          Please indicate now the trace field that should be used for this
+          entity. If none match, you can type a custom value.
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="selectedEntityId">
+      <label for="traceInput" class="form-label">Select Trace Template</label>
+      <input
+        id="traceInput"
+        class="form-control"
+        list="traceOptions"
+        autocomplete="off"
+        [(ngModel)]="selectedTraceValue"
+        (change)="onTraceSelect()"
+      />
+      <datalist id="traceOptions">
+        <option
+          *ngFor="let trace of possibleTraceValues"
+          [value]="trace"
+        ></option>
+      </datalist>
     </div>
 
     <p

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UnificationClarificationResponseDto } from 'src/app/dtos/unification-clarification-dto';
+import { UnificationClarificationFrontendResponseDto } from 'src/app/dtos/unification-clarification-selection-dto';
 import { BackendService, ToastService } from 'src/app/services';
 import * as devMock from 'src/assets/devMock.json';
 
@@ -12,7 +13,7 @@ import * as devMock from 'src/assets/devMock.json';
 export class UnificationPageComponent {
   processId!: string;
 
-  mode: string = 'PROD'; // "DEV"
+  mode: string = 'PROD';
 
   unificationFirstStepComplete: boolean = false;
   unificationFirstStepResponse: UnificationClarificationResponseDto | undefined;
@@ -94,5 +95,21 @@ export class UnificationPageComponent {
         this.router.navigate(['/']);
       },
     });
+  }
+
+  receiveResponse(response: UnificationClarificationFrontendResponseDto): void {
+    this.backendService
+      .triggerUnificationSecondStep(this.processId, response)
+      .subscribe({
+        next: (value) => {
+          console.log('Unification second step response:', value);
+        },
+        error: (error) => {
+          console.error('Error triggering unification second step:', error);
+          this.toastService.showError(
+            'Failed to trigger unification second step.'
+          );
+        },
+      });
   }
 }

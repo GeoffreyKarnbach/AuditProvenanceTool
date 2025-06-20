@@ -3,6 +3,7 @@ import { WorkflowDTO } from './ai-worfklow-dto';
 export interface UnificationClarificationDto {
   options: PossibleActivitiyDto[];
   mappingSuggestions: MappingItemDto[];
+  requestId: string;
 }
 
 export interface MappingItemDto {
@@ -18,7 +19,7 @@ export interface MappingSuggestionDto {
 
 export interface PossibleActivitiyDto {
   activity: string;
-  entities: string[];
+  entities: string[][];
 }
 
 export interface UnificationClarificationResponseDto {

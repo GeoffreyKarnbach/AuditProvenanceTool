@@ -9,6 +9,7 @@
     [clarificationRequests]="
       unificationFirstStepResponse.unificationClarificationResponse
     "
+    (submitEventEmitter)="receiveResponse($event)"
   ></app-pq-clarification-section>
   <hr />
   <app-ai-workflow-visualizer

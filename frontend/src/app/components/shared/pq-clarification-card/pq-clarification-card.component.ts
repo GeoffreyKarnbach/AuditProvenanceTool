@@ -25,6 +25,9 @@ export class PqClarificationCardComponent {
 
   defaultEntitiesSuggested: boolean = false;
 
+  possibleTraceValues: string[] = [];
+  selectedTraceValue: string | null = null;
+
   ngOnInit(): void {
     if (this.mapping.mapping?.mappings?.length) {
       this.availableActivities = this.mapping.mapping.mappings;
@@ -59,16 +62,47 @@ export class PqClarificationCardComponent {
       (a) => a.activity === this.selectedActivityId
     );
 
+    this.selectedTraceValue = '';
+
     if (activityObj?.entities.length !== 0) {
-      this.availableEntities = activityObj?.entities || [];
+      this.availableEntities = (activityObj?.entities || []).map((arr) =>
+        Array.isArray(arr) ? arr[0] : arr
+      );
     } else {
       this.defaultEntitiesSuggested = true;
       this.availableEntities =
         this.possibleActivities
           .find((a) => a.activity === this.selectedActivityId)
-          ?.entities.filter((e) => e !== null) || [];
+          ?.entities.filter((e) => e !== null)
+          .map((e) => (Array.isArray(e) ? e[0] : e)) || [];
       this.selectedEntityId = null;
     }
+  }
+
+  onEntitySelect(entityId: string): void {
+    let traceValues: string[] = [];
+
+    // First, try to find the entity in the currently selected availableActivities
+    const activityObj = this.availableActivities.find(
+      (a) => a.activity === this.selectedActivityId
+    );
+    let entity = activityObj?.entities.find((e) => e[0] === entityId);
+
+    if (!entity) {
+      // Fallback: try to find entity in the original possibleActivities
+      const fallbackActivityObj = this.possibleActivities.find(
+        (a) => a.activity === this.selectedActivityId
+      );
+      entity = fallbackActivityObj?.entities.find((e) => e[0] === entityId);
+    }
+
+    if (entity && entity.length > 1) {
+      traceValues = entity.slice(1);
+    }
+
+    this.possibleTraceValues = traceValues;
+    this.selectedEntityId = entityId;
+    this.selectedTraceValue = '';
   }
 
   resetActivitySelection(): void {
@@ -88,13 +122,14 @@ export class PqClarificationCardComponent {
     console.log('Selection reset:', this.selections);
   }
 
-  onEntityChange(): void {
+  onTraceSelect(): void {
     const selection = this.selections.find(
       (s) => s.question === this.mapping.question
     );
     if (selection) {
       selection.selectedActivityId = this.selectedActivityId || '';
       selection.selectedEntityId = this.selectedEntityId || '';
+      selection.selectedTraceValue = this.selectedTraceValue || null;
       console.log('Selection updated:', this.selections);
     }
   }

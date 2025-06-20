@@ -2,8 +2,13 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 import unifier
 import json
+import uuid
+
 application = Flask(__name__)
 CORS(application)
+
+ai_system_data_request_cache = {}
+pq_data_request_cache = {}
 
 @application.route("/api/v1/unification-first-step", methods=["POST"])
 def unification_process_init():
@@ -19,12 +24,28 @@ def unification_process_init():
         ai_system_data = json.loads(ai_system_content)
         pq_data = json.loads(pq_content)
 
-        result = unifier.unify_ai_system_with_pqs(ai_system_data, pq_data)
+        request_id = str(uuid.uuid4())
+        ai_system_data_request_cache[request_id] = ai_system_data
+        pq_data_request_cache[request_id] = pq_data
+
+        result = unifier.unify_ai_system_with_pqs(ai_system_data, pq_data, request_id)
         json_response = json.dumps(result, ensure_ascii=False, sort_keys=False)
+
+        print(json_response)
 
         return Response(json_response, status=200, mimetype='application/json')
 
     return "Invalid request", 400
+
+@application.route("/api/v1/unification-response/<request_id>", methods=["POST"])
+def unification_process_response(request_id):
+    print("Unification process response endpoint called with request_id:", request_id)
+
+    return Response(
+        json.dumps({"message": "Unification process response received"}),
+        status=200,
+        mimetype='application/json'
+    )
 
 if __name__ == "__main__":
     application.run(host="0.0.0.0", port=5504, debug=True)

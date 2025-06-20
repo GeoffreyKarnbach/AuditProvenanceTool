@@ -1,6 +1,16 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { UnificationClarificationDto } from 'src/app/dtos/unification-clarification-dto';
-import { UnificationClarificationSelectionItemDto } from 'src/app/dtos/unification-clarification-selection-dto';
+import {
+  UnificationClarificationFrontendResponseDto,
+  UnificationClarificationSelectionItemDto,
+} from 'src/app/dtos/unification-clarification-selection-dto';
 
 @Component({
   selector: 'app-pq-clarification-section',
@@ -8,6 +18,10 @@ import { UnificationClarificationSelectionItemDto } from 'src/app/dtos/unificati
   styleUrl: './pq-clarification-section.component.scss',
 })
 export class PqClarificationSectionComponent implements OnChanges {
+  @Output()
+  submitEventEmitter: EventEmitter<UnificationClarificationFrontendResponseDto> =
+    new EventEmitter<UnificationClarificationFrontendResponseDto>();
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['clarificationRequests']) {
       this.selections = this.clarificationRequests.mappingSuggestions.map(
@@ -15,6 +29,7 @@ export class PqClarificationSectionComponent implements OnChanges {
           question: suggestion.question,
           selectedActivityId: '',
           selectedEntityId: '',
+          selectedTraceValue: '',
         })
       );
     }
@@ -23,6 +38,7 @@ export class PqClarificationSectionComponent implements OnChanges {
   @Input() clarificationRequests: UnificationClarificationDto = {
     options: [],
     mappingSuggestions: [],
+    requestId: '',
   };
 
   selections: UnificationClarificationSelectionItemDto[] = [];
@@ -41,5 +57,9 @@ export class PqClarificationSectionComponent implements OnChanges {
     ) {
       this.currentIndex++;
     }
+  }
+
+  emitSelection(event: UnificationClarificationFrontendResponseDto): void {
+    this.submitEventEmitter.emit(event);
   }
 }

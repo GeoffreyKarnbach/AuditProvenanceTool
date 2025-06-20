@@ -32,7 +32,11 @@
         class="carousel-card"
         *ngIf="currentIndex === clarificationRequests.mappingSuggestions.length"
       >
-        <app-recap-card [selections]="selections"></app-recap-card>
+        <app-recap-card
+          [selections]="selections"
+          [requestId]="clarificationRequests.requestId"
+          (submitEventEmitter)="emitSelection($event)"
+        ></app-recap-card>
       </div>
     </div>
 

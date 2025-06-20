@@ -21,8 +21,12 @@ def find_matching_entity_for_activity(ai_system_data, activity_id, keyword):
     # We also look for activities that match the keyword directly inside their name or id
     matching_entities.extend(get_all_entities_with_keyword(ai_system_data, keyword, activity_id))
 
-    # Remove duplicates
-    return list(set(matching_entities))
+    matching_entities = list(set(matching_entities))
+
+    # Transform array of IDs into array of arrays, where the first element is the ID and the rest are trace options
+    result = [[entity_id] + aggregate_entity_with_trace_options(entity_id, ai_system_data) for entity_id in matching_entities]
+
+    return  result
 
 def get_all_entities_with_subtype(ai_system_data, subtype, activity_id):
     entities = []
@@ -77,6 +81,12 @@ def get_activities_from_ids(ai_system_data, activity_ids):
             activities.append(activity)
     return activities
 
+def aggregate_entity_with_trace_options(entity_id, ai_system_data):
+    for variable in ai_system_data.get("workflowVariables", []):
+        if variable["id"] == entity_id:
+            return variable.get("defaultTraceFields", [])
+
+    return []
 
 keyword_to_entity_subtype = {
     "ns#Processor":[
