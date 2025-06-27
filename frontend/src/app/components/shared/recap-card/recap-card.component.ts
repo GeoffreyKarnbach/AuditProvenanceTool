@@ -19,10 +19,7 @@ export class RecapCardComponent {
 
   get allSelected(): boolean {
     return this.selections.every(
-      (item) =>
-        item.selectedActivityId &&
-        item.selectedEntityId &&
-        item.selectedTraceValue
+      (item) => item.selectedActivityId && item.selectedEntityId
     );
   }
 

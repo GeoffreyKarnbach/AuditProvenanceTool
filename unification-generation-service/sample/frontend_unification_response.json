@@ -1,0 +1,29 @@
+{
+  "requestId": "386d6916-6e27-4a6c-b5c8-09e6f36b4612",
+  "items": [
+    {
+      "question": "Who pre-processed the data in the dataset?",
+      "selectedActivityId": "https://w3id.org/audit/ns#PreprocessTrainingData",
+      "selectedEntityId": "https://w3id.org/audit/ns#RawTrainingData",
+      "selectedTraceValue": null
+    },
+    {
+      "question": "Who produced deployment guidelines?",
+      "selectedActivityId": "https://w3id.org/audit/ns#RunAIModel",
+      "selectedEntityId": "https://w3id.org/audit/ns#TrainedMLModel",
+      "selectedTraceValue": "deploymentGuidelines"
+    },
+    {
+      "question": "Who was involved in generating the data?",
+      "selectedActivityId": "https://w3id.org/audit/ns#CollectTrainingData",
+      "selectedEntityId": "https://w3id.org/audit/ns#RawTrainingData",
+      "selectedTraceValue": null
+    },
+    {
+      "question": "Who participated in processing the data in the dataset?",
+      "selectedActivityId": "https://w3id.org/audit/ns#PreprocessTrainingData",
+      "selectedEntityId": "https://w3id.org/audit/ns#CleanedTrainingData",
+      "selectedTraceValue": null
+    }
+  ]
+}

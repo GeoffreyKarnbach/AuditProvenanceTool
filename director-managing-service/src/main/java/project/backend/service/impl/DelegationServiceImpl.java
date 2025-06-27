@@ -13,6 +13,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import project.backend.dto.PQAnalyzerResponseItemDTO;
+import project.backend.dto.UnificationClarificationFrontendResponseDTO;
 import project.backend.dto.UnificationClarificationResponseDTO;
 import project.backend.service.DelegationService;
 import project.backend.workflowmapping.Workflow;
@@ -31,6 +32,7 @@ public class DelegationServiceImpl implements DelegationService {
     private String AiSystemAnalyzerUrl;
     private String PQAnalyzerUrl;
     private String UnificationFirstStepUrl;
+    private String UnificationSecondStepUrl;
     private final ObjectMapper objectMapper;
 
     @PostConstruct
@@ -44,10 +46,12 @@ public class DelegationServiceImpl implements DelegationService {
             this.AiSystemAnalyzerUrl = "http://ai-system-analyzer-service:5500/api/v1/workflow-mapping";
             this.PQAnalyzerUrl = "http://pq-analyzer-service:5501/api/v1/pq-analyzer";
             this.UnificationFirstStepUrl = "http://unification-generation-service:5504/api/v1/unification-first-step";
+            this.UnificationSecondStepUrl = "http://unification-generation-service:5504/api/v1/unification-response";
         } else if (Objects.equals(mode, "dev")) {
             this.AiSystemAnalyzerUrl = "http://localhost:5500/api/v1/workflow-mapping";
             this.PQAnalyzerUrl = "http://localhost:5501/api/v1/pq-analyzer";
             this.UnificationFirstStepUrl = "http://localhost:5504/api/v1/unification-first-step";
+            this.UnificationSecondStepUrl = "http://localhost:5504/api/v1/unification-response";
         }
 
         log.info("WorkflowService initialized with URLs: {} and {}", AiSystemAnalyzerUrl, PQAnalyzerUrl);
@@ -111,6 +115,7 @@ public class DelegationServiceImpl implements DelegationService {
 
     @Override
     public CompletableFuture<UnificationClarificationResponseDTO> sendFilesToUnificationFirstStep(
+        String processId,
         Workflow workflow,
         List<PQAnalyzerResponseItemDTO> pqAnalyzerResponse
     ) {
@@ -121,12 +126,14 @@ public class DelegationServiceImpl implements DelegationService {
 
             MultiValueMap<String, Object> body = getStringObjectMultiValueMap(workflowJsonBytes, pqResponseJsonBytes);
 
+            String url = UnificationFirstStepUrl + "/" + processId;
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
             ResponseEntity<UnificationClarificationResponseDTO> response = restTemplate.exchange(
-                UnificationFirstStepUrl,
+                url,
                 HttpMethod.POST,
                 requestEntity,
                 UnificationClarificationResponseDTO.class
@@ -136,6 +143,35 @@ public class DelegationServiceImpl implements DelegationService {
 
         } catch (Exception e) {
             log.error("Error sending files to {}", UnificationFirstStepUrl, e);
+            return CompletableFuture.failedFuture(e);
+        }
+    }
+
+    @Override
+    @Async
+    public CompletableFuture<byte[]> sendToUnificationSecondStep(String processId, UnificationClarificationFrontendResponseDTO requestDTO) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<UnificationClarificationFrontendResponseDTO> requestEntity = new HttpEntity<>(requestDTO, headers);
+
+            String url = UnificationSecondStepUrl + "/" + processId;
+
+            log.info("Sending request to Unification Second Step URL: {}", url);
+            log.info("Request body: {}", requestDTO);
+
+            ResponseEntity<byte[]> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                byte[].class
+            );
+
+            return CompletableFuture.completedFuture(response.getBody());
+
+        } catch (Exception e) {
+            log.error("Error sending request to {}", UnificationSecondStepUrl, e);
             return CompletableFuture.failedFuture(e);
         }
     }

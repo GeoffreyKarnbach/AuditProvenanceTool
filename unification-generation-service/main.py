@@ -2,7 +2,8 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 import unifier
 import json
-import uuid
+import trace_template_generation
+import output_util
 
 application = Flask(__name__)
 CORS(application)
@@ -10,8 +11,8 @@ CORS(application)
 ai_system_data_request_cache = {}
 pq_data_request_cache = {}
 
-@application.route("/api/v1/unification-first-step", methods=["POST"])
-def unification_process_init():
+@application.route("/api/v1/unification-first-step/<request_id>", methods=["POST"])
+def unification_process_init(request_id):
     ai_system_analyzer_description = request.files.get("ai_system_analyzer")
     pq_analyzer_response = request.files.get("pq_analyzer")
 
@@ -24,7 +25,6 @@ def unification_process_init():
         ai_system_data = json.loads(ai_system_content)
         pq_data = json.loads(pq_content)
 
-        request_id = str(uuid.uuid4())
         ai_system_data_request_cache[request_id] = ai_system_data
         pq_data_request_cache[request_id] = pq_data
 
@@ -41,11 +41,27 @@ def unification_process_init():
 def unification_process_response(request_id):
     print("Unification process response endpoint called with request_id:", request_id)
 
-    return Response(
-        json.dumps({"message": "Unification process response received"}),
-        status=200,
-        mimetype='application/json'
-    )
+    ai_system_data_cached = ai_system_data_request_cache.get(request_id)
+    pq_data_cached = pq_data_request_cache.get(request_id)
+
+    if not ai_system_data_cached or not pq_data_cached:
+        return Response(
+            json.dumps({"error": "No cached data found for the given request_id"}),
+            status=404,
+            mimetype='application/json'
+        )
+
+    response = request.get_json()
+    trace_templates = trace_template_generation.generate_trace_templates(response, ai_system_data_cached, pq_data_cached)
+    zip_file_path = output_util.build_output(trace_templates, None)
+
+    # Return ZIP file
+
+    with open(zip_file_path, 'rb') as zip_file:
+        zip_content = zip_file.read()
+        return Response(zip_content, status=200, mimetype='application/zip', headers={
+            'Content-Disposition': f'attachment; filename=output.zip'
+        })
 
 if __name__ == "__main__":
     application.run(host="0.0.0.0", port=5504, debug=True)

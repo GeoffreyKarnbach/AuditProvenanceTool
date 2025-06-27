@@ -3,6 +3,8 @@ WORKDIR /app
 COPY pom.xml .
 COPY checkstyle.xml .
 
+RUN mvn dependency:go-offline -DskipTests
+
 COPY src ./src
 RUN mvn clean package -DskipTests -Dcheckstyle.skip=true
 

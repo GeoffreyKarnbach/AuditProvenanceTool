@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.backend.dto.PQAnalyzerResponseItemDTO;
+import project.backend.dto.UnificationClarificationFrontendResponseDTO;
 import project.backend.dto.UnificationClarificationManagingRequestDTO;
 import project.backend.dto.UnificationClarificationResponseDTO;
 import project.backend.service.DelegationService;
@@ -24,6 +25,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     private final HashMap<String, Workflow> processIdAiSystemAnalyzerResponse = new HashMap<>();
     private final HashMap<String, List<PQAnalyzerResponseItemDTO>> processIdPQAnalyzerResponse = new HashMap<>();
     private final HashMap<String, UnificationClarificationResponseDTO> processUnificationFirstStepResponse = new HashMap<>();
+    private final HashMap<String, byte[]> processUnificationSecondStepResponse = new HashMap<>();
 
     @Override
     public String initiateWorkflow(MultipartFile ttlFile, MultipartFile txtFile) throws IOException {
@@ -81,7 +83,7 @@ public class WorkflowServiceImpl implements WorkflowService {
         List<PQAnalyzerResponseItemDTO> pqAnalyzerResponse = processIdPQAnalyzerResponse.get(processId);
 
         if (aiSystemAnalyzerResponse != null && pqAnalyzerResponse != null) {
-            this.delegationService.sendFilesToUnificationFirstStep(aiSystemAnalyzerResponse, pqAnalyzerResponse)
+            this.delegationService.sendFilesToUnificationFirstStep(processId, aiSystemAnalyzerResponse, pqAnalyzerResponse)
                 .thenAccept(response -> {
                     log.info("Unification first step response: {}", response);
                     processUnificationFirstStepResponse.put(processId, response);
@@ -112,5 +114,20 @@ public class WorkflowServiceImpl implements WorkflowService {
             .unificationClarificationResponse(response)
             .workflow(aiSystemAnalyzerResponse)
             .build();
+    }
+
+    @Override
+    public Boolean triggerUnificationWorkflowSecondStep(String processId, UnificationClarificationFrontendResponseDTO requestDTO) {
+        this.delegationService.sendToUnificationSecondStep(processId, requestDTO)
+            .thenAccept(success -> {
+                log.info("Unification second step response received for process ID: {}", processId);
+                processUnificationSecondStepResponse.put(processId, success);
+            })
+            .exceptionally(e -> {
+                log.error("Error triggering unification second step", e);
+                return null;
+            });
+
+        return true;
     }
 }

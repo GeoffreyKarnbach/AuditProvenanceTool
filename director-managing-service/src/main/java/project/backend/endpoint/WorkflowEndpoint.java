@@ -70,11 +70,10 @@ public class WorkflowEndpoint {
         return response;
     }
 
-
     @PostMapping(value="/trigger-unification-second-step/{processId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean triggerSecondStepUnificationWorkflow(@PathVariable String processId, @RequestBody UnificationClarificationFrontendResponseDTO unificationClarificationFrontendResponse) {
         log.info("POST /api/v1/workflow/trigger-unification-second-step/{}", processId);
         log.info("Received unification clarification response: {}", unificationClarificationFrontendResponse);
-        return false;
+        return workflowService.triggerUnificationWorkflowSecondStep(processId, unificationClarificationFrontendResponse);
     }
 }

@@ -103,6 +103,8 @@ export class PqClarificationCardComponent {
     this.possibleTraceValues = traceValues;
     this.selectedEntityId = entityId;
     this.selectedTraceValue = '';
+
+    this.onTraceSelect();
   }
 
   resetActivitySelection(): void {

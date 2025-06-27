@@ -2,6 +2,7 @@ package project.backend.service;
 
 import org.springframework.scheduling.annotation.Async;
 import project.backend.dto.PQAnalyzerResponseItemDTO;
+import project.backend.dto.UnificationClarificationFrontendResponseDTO;
 import project.backend.dto.UnificationClarificationResponseDTO;
 import project.backend.workflowmapping.Workflow;
 
@@ -17,5 +18,9 @@ public interface DelegationService {
     CompletableFuture<List<PQAnalyzerResponseItemDTO>> sendFileToPQAnalyzer(byte[] fileContent, String filename);
 
     @Async
-    CompletableFuture<UnificationClarificationResponseDTO> sendFilesToUnificationFirstStep(Workflow workflow, List<PQAnalyzerResponseItemDTO> pqAnalyzerResponse);
+    CompletableFuture<UnificationClarificationResponseDTO> sendFilesToUnificationFirstStep(String processId, Workflow workflow, List<PQAnalyzerResponseItemDTO> pqAnalyzerResponse);
+
+    @Async
+    CompletableFuture<byte[]> sendToUnificationSecondStep(String processId, UnificationClarificationFrontendResponseDTO requestDTO);
+
 }
