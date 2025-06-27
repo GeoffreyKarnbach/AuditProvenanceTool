@@ -91,7 +91,7 @@ def build_output(trace_templates, sparql_queries):
     clean_up()
 
     # Return ZIP file path
-    return "output/output_trace.zip"
+    return "output/output.zip"
 
 if __name__ == "__main__":
     with open("sample/ai_system_analyzer_response.json", "r") as file:

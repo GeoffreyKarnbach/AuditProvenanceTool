@@ -60,13 +60,28 @@ export class BackendService {
     );
   }
 
-  triggerUnificationSecondStep(
+  triggerOutputGeneration(
     processId: string,
     response: UnificationClarificationFrontendResponseDto
   ): Observable<boolean> {
     return this.httpClient.post<boolean>(
-      `${this.workflowUri}/trigger-unification-second-step/${processId}`,
+      `${this.workflowUri}/trigger-output-generation/${processId}`,
       response
+    );
+  }
+
+  outputGenerationComplete(processId: string): Observable<boolean> {
+    return this.httpClient.get<any>(
+      `${this.workflowUri}/output-generation-complete/${processId}`
+    );
+  }
+
+  getOutputGenerationContent(processId: string): Observable<Blob> {
+    return this.httpClient.get(
+      `${this.workflowUri}/output-generation-response/${processId}`,
+      {
+        responseType: 'blob',
+      }
     );
   }
 }

@@ -1,5 +1,7 @@
 from flask import Flask, request, Response
 from flask_cors import CORS
+
+import sparql_query_generation
 import unifier
 import json
 import trace_template_generation
@@ -53,9 +55,9 @@ def unification_process_response(request_id):
 
     response = request.get_json()
     trace_templates = trace_template_generation.generate_trace_templates(response, ai_system_data_cached, pq_data_cached)
-    zip_file_path = output_util.build_output(trace_templates, None)
+    sparql_queries = sparql_query_generation.generate_sparql_queries(trace_templates, response, ai_system_data_cached, pq_data_cached)
+    zip_file_path = output_util.build_output(trace_templates, sparql_queries)
 
-    # Return ZIP file
 
     with open(zip_file_path, 'rb') as zip_file:
         zip_content = zip_file.read()

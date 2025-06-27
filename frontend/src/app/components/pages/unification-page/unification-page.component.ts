@@ -99,15 +99,15 @@ export class UnificationPageComponent {
 
   receiveResponse(response: UnificationClarificationFrontendResponseDto): void {
     this.backendService
-      .triggerUnificationSecondStep(this.processId, response)
+      .triggerOutputGeneration(this.processId, response)
       .subscribe({
         next: (value) => {
-          console.log('Unification second step response:', value);
+          this.router.navigate(['/result', this.processId]);
         },
         error: (error) => {
-          console.error('Error triggering unification second step:', error);
+          console.error(error);
           this.toastService.showError(
-            'Failed to trigger unification second step.'
+            'Failed to trigger output generation: ' + error.message
           );
         },
       });

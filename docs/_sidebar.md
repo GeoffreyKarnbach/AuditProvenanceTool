@@ -7,3 +7,5 @@
   - [3. AI System Analyzer Service](components/ai-system-analyzer-service.md)
   - [4. PQ Analyzer Service](components/pq-analyzer-service.md)
   - [5. Unification Generation Service](components/unification-generation-service.md)
+
+- [Future Work Ideas](future-work.md)

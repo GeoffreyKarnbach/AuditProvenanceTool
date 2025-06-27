@@ -23,6 +23,7 @@ import { AiWorkflowVisualizerComponent } from './components/shared/ai-workflow-v
 import { PqClarificationCardComponent } from './components/shared/pq-clarification-card/pq-clarification-card.component';
 import { PqClarificationSectionComponent } from './components/shared/pq-clarification-section/pq-clarification-section.component';
 import { RecapCardComponent } from './components/shared/recap-card/recap-card.component';
+import { ResultPageComponent } from './components/pages/result-page/result-page.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { RecapCardComponent } from './components/shared/recap-card/recap-card.co
     PqClarificationCardComponent,
     PqClarificationSectionComponent,
     RecapCardComponent,
+    ResultPageComponent,
   ],
   imports: [
     BrowserModule,

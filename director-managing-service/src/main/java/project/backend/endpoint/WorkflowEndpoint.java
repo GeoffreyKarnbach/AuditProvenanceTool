@@ -2,8 +2,7 @@ package project.backend.endpoint;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -70,10 +69,33 @@ public class WorkflowEndpoint {
         return response;
     }
 
-    @PostMapping(value="/trigger-unification-second-step/{processId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/trigger-output-generation/{processId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean triggerSecondStepUnificationWorkflow(@PathVariable String processId, @RequestBody UnificationClarificationFrontendResponseDTO unificationClarificationFrontendResponse) {
         log.info("POST /api/v1/workflow/trigger-unification-second-step/{}", processId);
         log.info("Received unification clarification response: {}", unificationClarificationFrontendResponse);
         return workflowService.triggerUnificationWorkflowSecondStep(processId, unificationClarificationFrontendResponse);
+    }
+
+    @GetMapping(value = "/output-generation-complete/{processId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean outputGenerationComplete(@PathVariable String processId) {
+        log.info("GET /api/v1/workflow/output-generation-complete/{}", processId);
+        return workflowService.outputGenerationComplete(processId);
+    }
+
+
+    @GetMapping(value="/output-generation-response/{processId}", produces = "application/zip")
+    public ResponseEntity<byte[]> getOutputGenerationResponse(@PathVariable String processId) {
+        log.info("GET /api/v1/workflow/output-generation-response/{}", processId);
+        byte[] response = this.workflowService.getOutputGenerationResponse(processId);
+        if (response == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Output generation response not found for process ID: " + processId);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDisposition(ContentDisposition.attachment().filename("output.zip").build());
+        headers.setContentLength(response.length);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 }

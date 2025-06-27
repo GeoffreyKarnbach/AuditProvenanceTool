@@ -21,4 +21,8 @@ public interface WorkflowService {
     UnificationClarificationManagingRequestDTO getUnificationFirstStepResponse(String processId);
 
     Boolean triggerUnificationWorkflowSecondStep(String processId, UnificationClarificationFrontendResponseDTO requestDTO);
+
+    Boolean outputGenerationComplete(String processId);
+
+    byte[] getOutputGenerationResponse(String processId);
 }

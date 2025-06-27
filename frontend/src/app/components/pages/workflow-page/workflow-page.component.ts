@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastService } from 'src/app/services';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -8,7 +9,11 @@ import { BackendService } from 'src/app/services/backend.service';
   styleUrl: './workflow-page.component.scss',
 })
 export class WorkflowPageComponent {
-  constructor(private backendService: BackendService, private router: Router) {}
+  constructor(
+    private backendService: BackendService,
+    private router: Router,
+    private toastService: ToastService
+  ) {}
 
   ttlFile: File | null = null;
   txtFile: File | null = null;
@@ -55,14 +60,16 @@ export class WorkflowPageComponent {
 
   onSubmit() {
     if (!this.ttlFile || !this.txtFile) {
-      alert('Please upload both TTL and TXT files.');
+      this.toastService.showError('Please upload both TTL and TXT files.');
       return;
     }
 
     this.backendService.uploadFiles(this.ttlFile, this.txtFile).subscribe({
       next: (response) => {
-        console.log('Files uploaded successfully:', response);
-        alert('Files uploaded successfully!');
+        this.toastService.showSuccess(
+          'Files uploaded successfully!',
+          'Success'
+        );
         this.ttlServerProcessing = true;
         this.txtServerProcessing = true;
         this.processId = response;
@@ -99,7 +106,7 @@ export class WorkflowPageComponent {
       },
       error: (error) => {
         console.error('Error uploading files:', error);
-        alert('Error uploading files. Please try again.');
+        this.toastService.showError('Error uploading files. Please try again.');
       },
     });
   }
@@ -108,7 +115,9 @@ export class WorkflowPageComponent {
     if (this.ttlProcessed && this.txtProcessed) {
       this.router.navigate(['/unification', this.processId]);
     } else {
-      alert('Please wait for both files to be processed.');
+      this.toastService.showError(
+        'Please wait for both files to be processed before proceeding to unification.'
+      );
     }
   }
 }

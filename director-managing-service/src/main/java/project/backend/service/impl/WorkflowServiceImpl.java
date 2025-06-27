@@ -130,4 +130,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 
         return true;
     }
+
+    @Override
+    public Boolean outputGenerationComplete(String processId) {
+        return processUnificationSecondStepResponse.containsKey(processId);
+    }
+
+    @Override
+    public byte[] getOutputGenerationResponse(String processId) {
+        return processUnificationSecondStepResponse.get(processId);
+    }
 }
