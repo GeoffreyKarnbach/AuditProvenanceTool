@@ -1,50 +1,69 @@
 # Architecture
 
-The **AI Auditing & Provenance Question Tool** is built as a modular, distributed system following a **microservice architecture**. Each service is responsible for a distinct concern in the pipeline, allowing for independent development, deployment, and scaling.
+The **AI Auditing & Provenance Question Tool** is built as a modular, distributed system following a **microservice architecture**. This design separates the system's complex responsibilities—understanding an AI system's structure, interpreting natural language, and unifying these two streams of information—into independent, focused services.
 
-## Workflow
+The entire system is orchestrated by the **Director Managing Service**, which manages a sophisticated, asynchronous workflow that ensures a responsive user experience.
+
+## End-to-End Workflow Narrative
+
+The architecture is designed to execute a two-phase workflow: a **parallel analysis and clarification phase**, followed by a **final artifact generation phase**.
 
 ![System Workflow](_media/workflow.png)
 
-## Overview
+1.  **Initiation (Frontend → Director):**
+    The user uploads their AI System Description (`.ttl`) and Auditing Questions (`.txt`) via the **Frontend**. The Frontend sends these files to the **Director Managing Service**, which immediately generates and returns a unique `processId`. This ID is crucial for the asynchronous polling pattern that follows.
 
-The system consists of the following services:
+2.  **Parallel Analysis (Director → Analysis Services):**
+    The Director kicks off two analysis tasks in parallel to save time:
+
+    - It sends the `.ttl` file to the **AI System Analyzer**, which parses the file into a structured, sequential `Workflow` object and enriches it with default trace fields.
+    - It sends the `.txt` file to the **PQ Analyzer**, which runs each question through a 5-stage NLP pipeline to formalize it into a structured triplet and map it to a PROV-O concept.
+
+3.  **First Unification & Clarification (Director → Unification → Frontend):**
+    Once the Director confirms (via its internal state) that both analysis services have completed their tasks, it triggers the **Unification Generation Service** for Phase 1. This service uses a hybrid semantic and fuzzy-matching strategy to find potential links between the analyzed questions and the AI workflow components. It returns a set of clarification options to the Director, which are then passed to the **Frontend** to be presented to the user.
+
+4.  **Final Generation (Frontend → Director → Unification → Frontend):**
+    After the user resolves all ambiguities on the clarification screen, the **Frontend** sends the final, definitive user choices back to the **Director**. The Director triggers the **Unification Generation Service** for Phase 2. This service now uses the unambiguous mappings to generate the final SPARQL queries and JSON trace templates, packages them into a `.zip` archive, and returns it to the Director. The Director then serves this file to the **Frontend**, which initiates the download for the user.
+
+## Service Overview
+
+The system consists of the following services, each with a highly specialized role:
 
 ### [Frontend](components/frontend.md)
 
 - **Tech:** Angular + Bootstrap
-- **Role:** Provides an interactive user interface to input natural language questions and the AI system description, unify ambiguities in questions, and download the generated trace templates and sparql queries.
+- **Role:** Provides the interactive user experience, guiding the user through file upload, the crucial **interactive clarification** of ambiguous mappings, and the final download of the generated artifacts.
 - **Port:** `5503`
 
 ### [AI System Analyzer](components/ai-system-analyzer-service.md)
 
 - **Tech:** Java + Apache Jena
-- **Role:** Parses and analyzes the internal structure of AI systems and converts them into an internal JSON representation based on semantic web technologies.
+- **Role:** Parses the formal AI system description (`.ttl`) into a **sequential workflow object**. It then enriches this object by populating each step, agent, and variable with a list of **default trace fields** based on configurable rules.
 - **Port:** `5500`
 
 ### [PQ Analyzer](components/pq-analyzer-service.md)
 
-- **Tech:** Python
-- **Role:** Handles natural language processing of provenance-related questions, simplifying them and mapping them to ontology-based queries (e.g., PROV-O).
+- **Tech:** Python + spaCy
+- **Role:** Executes a **multi-stage NLP pipeline** on the user's questions. It simplifies, formalizes them into Subject-Predicate-Object (SPO) triplets, and maps them to specific **PROV-O concepts** using a configurable, rules-based knowledge base.
 - **Port:** `5501`
 
 ### [Unification Generation Service](components/unification-generation-service.md)
 
-- **Tech:** Python
-- **Role:** Merges and enriches inputs from the AI analyzer and PQ analyzer, creating unified graph structures for the director to consume.
+- **Tech:** Python + RapidFuzz
+- **Role:** Operates in a **two-phase process**. First, it generates clarification options using a hybrid matching strategy. Second, based on user feedback, it generates the final **SPARQL queries** and **JSON trace templates**.
 - **Port:** `5504`
 
-### [Director Managing Service](components/director-managing-service.md)
+### [Director Managing Service](components-director-managing-service.md)
 
-- **Tech:** Java
-- **Role:** Acts as the central coordinator. Receives requests from the frontend, orchestrates communication between all analysis services, and returns structured answers.
+- **Tech:** Java (Spring Boot)
+- **Role:** Acts as the central **asynchronous orchestrator** and API gateway. It manages the entire workflow state using a `processId`, communicates with all backend services, and implements the **polling pattern** that the frontend uses to track progress.
 - **Port:** `5502`
 
 ---
 
 ## Deployment with Docker Compose
 
-All services are containerized and orchestrated via Docker Compose:
+All services are containerized and orchestrated via Docker Compose. The `depends_on` configuration ensures that the Director and Frontend start only after their dependencies are available.
 
 ```yaml
 services:
@@ -88,9 +107,9 @@ services:
 
 ## Distributed Microservice Benefits
 
-This architecture provides:
+This architecture was chosen to leverage several key advantages:
 
-- **Scalability**: Each component can be scaled independently based on load.
-- **Separation of Concerns**: Services are decoupled and focused on specific tasks.
-- **Technology Flexibility**: Services use the best-suited languages (Java for semantic reasoning and managing transactions, Python for NLP, Angular for UI).
-- **Robustness**: Failures in one service do not crash the entire system.
+- **Scalability**: Each component can be scaled independently. If NLP processing becomes a bottleneck, only the `pq-analyzer-service` needs more resources.
+- **Separation of Concerns**: Each service is highly focused. The NLP experts can work on the PQ Analyzer without needing to understand the intricacies of Apache Jena, and vice-versa.
+- **Technology Flexibility**: Each service uses the best-suited language for its task (e.g., Python for its rich NLP ecosystem, Java for its robust handling of transactions and type safety in the orchestrator).
+- **Robustness**: The asynchronous, distributed nature means that a failure in one analysis service does not crash the entire system. The Director can handle such failures gracefully.
