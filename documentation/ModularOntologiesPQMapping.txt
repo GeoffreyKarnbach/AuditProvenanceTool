@@ -1,6 +1,0 @@
-PROV
-	- mapper.py
-	- concept.json
-	- mappings
-		- prov_agents.json
-		- prov_entities.json
