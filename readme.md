@@ -1,7 +1,7 @@
 # AI Auditing & Provenance Question Tool 🔎
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/GeoffreyKarnbach/AuditProvenanceTool)
-[![License](https://img.shields.io/badge/License-Proprietary-red)](LICENSE)
+[![License](https://img.shields.io/badge/License-Proprietary-red)](LICENSE.md)
 [![Docs](https://img.shields.io/badge/docs-live-blue)](https://geoffreykarnbach.github.io/AuditProvenanceTool/#/)
 
 This project provides a powerful, interactive tool to **transform high-level, natural language auditing questions into formal, actionable artifacts** like SPARQL queries and JSON trace templates. It's designed to bridge the gap between human-readable compliance policies and machine-readable system logs.
@@ -73,4 +73,4 @@ This project is proprietary and is available under a restrictive, source-availab
 
 Any other use, including copying, modifying, distributing, or using the software in a commercial or non-commercial setting, is **strictly prohibited** and requires the explicit, prior **written permission** of the author.
 
-Please see the [LICENSE](LICENSE) file for the full terms.
+Please see the [LICENSE](LICENSE.md) file for the full terms.
